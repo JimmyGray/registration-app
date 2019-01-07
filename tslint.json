@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ],
+  "rules": {
+    "interface-name": false,
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": false,
+    "no-console": false
+  }
+}

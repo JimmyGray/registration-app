@@ -1,0 +1,8 @@
+export enum Screens {
+    MAIN = 'MAIN',
+    REGISTER_LIST = 'REGISTER_LIST',
+    REGISTER = 'REGISTER',
+    ADMIN = 'ADMIN',
+    ADD_USER_FORM = 'ADD_USER_FORM',
+    SEARCH_USER = 'SEARCH_USER'
+}

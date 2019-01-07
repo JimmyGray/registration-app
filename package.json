@@ -1,0 +1,51 @@
+{
+  "name": "registration-app",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "ts": "tsc",
+    "ts-watch": "tsc -w",
+    "ts-lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "ts-lint-watch": "yarn ts-lint; chokidar 'src/**/*.{ts,tsx}' -c 'yarn ts-lint'",
+    "test": "jest",
+    "test-watch": "jest --watch"
+  },
+  "dependencies": {
+    "expo": "31.0.2",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-elements": "0.19.1",
+    "react-native-table-component": "^1.2.0",
+    "react-navigation": "3.0.9",
+    "react-redux": "6.0.0",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.4"
+  },
+  "devDependencies": {
+    "@types/expo": "31.0.5",
+    "@types/react": "16.7.18",
+    "@types/jest": "23.3.10",
+    "@types/react-native": "0.57.23",
+    "@types/redux-actions": "2.3.1",
+    "@types/react-navigation": "3.0.1",
+    "@types/react-redux": "6.0.11",
+    "@types/react-test-renderer": "16.0.3",
+    "@types/redux": "^3.6.0",
+    "babel-preset-expo": "^5.0.0",
+    "chokidar-cli": "^1.2.1",
+    "jest": "^23.6.0",
+    "jest-expo": "^31.0.0",
+    "prettier": "^1.15.3",
+    "react-test-render": "^1.1.1",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.2.2"
+  },
+  "private": true
+}
