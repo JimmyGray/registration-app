@@ -17,7 +17,7 @@ export interface IAddUserFormState {
 export default class BasicDetailsForm extends React.Component<IAddUserFormProps, IAddUserFormState> {
 
     public static navigationOptions = {
-        title: 'Add User'
+        title: 'Basic Details'
     };
 
     constructor(props: IAddUserFormProps) {

@@ -90,7 +90,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
         const { query } = this.state;
         if (query) {
             return this.props.users
-                .filter((user: User) => user.fullName.indexOf(query) !== -1)
+                .filter((user: User) => user.fullName.toLowerCase().indexOf(query.toLowerCase()) !== -1)
                 .map((user: User) => ({
                     id: user.id,
                     text: user.fullName,

@@ -41,7 +41,7 @@ export default class Admin extends React.Component<IAdminProps> {
     }
 
     private handleOnRowPress = (user: User) => {
-        this.props.navigation.navigate(Screens.ADD_USER_BASIC_EDIT, { user, title: 'Edit User'});
+        this.props.navigation.navigate(Screens.ADD_USER_BASIC, { user });
     }
 
     private getTitle() {

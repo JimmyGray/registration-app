@@ -24,7 +24,12 @@ export const addUserAction = (user: User) => createAction(ACTION_TYPES.ADD_USER)
 export const userReducer = handleActions(
     {
         [ACTION_TYPES.REMOVE_USER]: (state: any, action: any) => state.filter(user => user.id !== action.payload),
-        [ACTION_TYPES.ADD_USER]: (state: any, action: any) => state.map(user => action.payload.id === user.id ? action.payload : user),
+        [ACTION_TYPES.ADD_USER]: (state: any, action: any) => {
+            if (state.find(user => user.id === action.payload.id)) {
+                return state.map(user => action.payload.id === user.id ? action.payload : user);
+            }
+            return state.concat(action.payload);
+        },
     },
     ADMIN_DEFAULT_STATE
 );
