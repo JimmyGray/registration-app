@@ -2,11 +2,15 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
-import AddUserFormConnected from './Admin/AddUserForm/AddUserFormConnected';
+import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
+import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
 import AdminConnected from './Admin/AdminConnected';
 import RegisterConnected from './Registration/Register/RegisterConnected';
 import RegisterListConnected from './Registration/RegisterListConnected';
 import SearchUsersConnected from './Registration/SearchModal/SearchUsersConnected';
+import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
+import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
+import ReportsConnected from './Reports/ReportsConnected';
 import { Screens } from './Screens';
 import { blue, grey, teal, white } from './theme/colors';
 
@@ -34,13 +38,12 @@ class Main extends React.Component<IAppProps> {
                     icon={{ name: 'notebook', type: 'simple-line-icon' }}
                     title='Reports'
                     backgroundColor={teal.teal600}
-                    onPress={() => this.props.navigation.navigate(Screens.ADMIN)}
+                    onPress={() => this.props.navigation.navigate(Screens.REPORTS)}
                     buttonStyle={styles.button}
                 />
                 <Icon
                     raised={true}
                     name='person'
-                    type='simple-line-icon'
                     reverse={true}
                     color={grey.grey500}
                     containerStyle={styles.icon}
@@ -69,11 +72,15 @@ const styles = StyleSheet.create({
 
 const AppNavigator = createStackNavigator({
     [Screens.MAIN]: Main,
+    [Screens.REPORTS]: ReportsConnected,
     [Screens.REGISTER_LIST]: RegisterListConnected,
     [Screens.REGISTER]: RegisterConnected,
     [Screens.ADMIN]: AdminConnected,
-    [Screens.ADD_USER_FORM]: AddUserFormConnected,
-    [Screens.SEARCH_USER]: SearchUsersConnected
+    [Screens.ADD_USER_BASIC]: BasicDetailsForm,
+    [Screens.ADD_USER_ALLERGIES]: AllergiesFormConnected,
+    [Screens.SEARCH_USER]: SearchUsersConnected,
+    [Screens.ALLERGIES]: AllergiesConnected,
+    [Screens.ATTENDANCES]: AttendancesConnected
 });
 
 export const AppNavigation = createAppContainer(AppNavigator);

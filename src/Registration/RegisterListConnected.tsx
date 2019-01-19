@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { IAppState } from '../store/createStore';
 import { selectRegisterAction } from '../UIOperations';
 import RegisterList from './RegisterList';
-import { addRegisterAction } from './RegisterListOperations';
+import { addRegisterAction, removeRegisterAction } from './RegisterListOperations';
 
 const mapStateToProps = (state: IAppState, ownProps: any) => ({
     registerList: state.registerList,
@@ -12,6 +12,7 @@ const mapStateToProps = (state: IAppState, ownProps: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => bindActionCreators({
     addRegister: addRegisterAction,
+    removeRegister: removeRegisterAction,
     selectRegister: selectRegisterAction
 }, dispatch);
 

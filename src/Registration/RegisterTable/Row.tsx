@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableNativeFeedback, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Badge, Button, Text } from 'react-native-elements';
 import { grey, red } from '../../theme/colors';
 
@@ -23,14 +23,13 @@ export interface IRowProps {
 export interface IColumnProps {
     value: string;
     onPress?: any;
+    textStyle?: any;
 }
 
-export const TextColumn = (props: IColumnProps) => (
-    <View style={styles.Column}><Text>{props.value}</Text></View>
-);
+export const TextColumn = (props: IColumnProps) => <View style={styles.column}><Text style={props.textStyle}>{props.value}</Text></View>;
 
 export const BadgeColumn = (props: IColumnProps) => (
-    <View style={styles.Column}>
+    <View style={styles.column}>
         <Badge containerStyle={{ backgroundColor: red.red500 }}>
             <Text>{props.value}</Text>
         </Badge>
@@ -38,11 +37,11 @@ export const BadgeColumn = (props: IColumnProps) => (
 );
 
 export const ButtonColumn = (props: IColumnProps) => (
-    <View style={styles.Column}>
+    <View style={styles.column}>
         <Button
             buttonStyle={styles.button}
             title={props.value}
-            backgroundColor={grey.grey600}
+            backgroundColor={red.reda700}
             onPress={props.onPress}
             borderRadius={5}
         />
@@ -51,12 +50,12 @@ export const ButtonColumn = (props: IColumnProps) => (
 
 export const Row = (props: IRowProps) => {
     return (
-        <TouchableNativeFeedback style={styles.rowContainer} onLongPress={props.onLongPress}>
+        <TouchableOpacity onLongPress={props.onLongPress}>
             <View style={styles.rowContainer}>
-                {props.items.map((item) => {
+                {props.items.map((item, index) => {
                     if (item.type === RowType.TEXT) {
                         return (
-                            <TextColumn key={item.value} value={item.value}/>
+                            <TextColumn key={item.value + index} value={item.value}/>
                         );
                     } else if (item.type === RowType.BADGE) {
                         return (
@@ -70,7 +69,7 @@ export const Row = (props: IRowProps) => {
                     return null;
                 })}
             </View>
-        </TouchableNativeFeedback>
+        </TouchableOpacity>
     );
 };
 
@@ -78,19 +77,20 @@ const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: grey.grey600,
-        height: 50
+        borderBottomColor: grey.grey200,
+        height: 40
     },
-    Column: {
+    column: {
         flex: 1,
-        height: 50,
+        height: 40,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center'
     },
     button: {
-        height: 40,
-        width: 100
+        height: 30,
+        width: 100,
+        padding: 5
     }
 });

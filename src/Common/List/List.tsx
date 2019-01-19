@@ -20,7 +20,7 @@ export interface IListProps {
 export default class List extends React.Component<IListProps> {
     public render() {
         return (
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps='always'>
                 {this.props.items
                     .map(item => <ListItem
                         key={item.key}

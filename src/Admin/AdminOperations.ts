@@ -3,21 +3,28 @@ import { User } from '../Entity/User';
 
 export enum ACTION_TYPES {
     ADD_USER = '@ADMIN/ADD_USER',
-    REMOVE_USER = '@ADMIN/REMOVE_USER'
+    REMOVE_USER = '@ADMIN/REMOVE_USER',
 }
-export const ADMIN_DEFAULT_STATE: User[] = [
+export const ADMIN_DEFAULT_STATE: IAdminState = [
     new User('123', 'James', 'Gray'),
-    new User('456', 'Abbey', 'Sanders'),
-    new User('789', 'Anita', 'Gray'),
 ];
+
+export interface User {
+    id: string;
+    firstName: string;
+    surname: string;
+    allergies: any[]
+}
+
+export type IAdminState = User[];
 
 export const removeUserAction = (id: string) => createAction(ACTION_TYPES.REMOVE_USER)(id);
 export const addUserAction = (user: User) => createAction(ACTION_TYPES.ADD_USER)(user);
 
-export const adminReducer = handleActions(
+export const userReducer = handleActions(
     {
-        [ACTION_TYPES.ADD_USER]: (state: User[], action: any) => state.concat(action.payload),
-        [ACTION_TYPES.REMOVE_USER]: (state: User[], action: any) => state.filter(user => user.id !== action.payload),
+        [ACTION_TYPES.REMOVE_USER]: (state: any, action: any) => state.filter(user => user.id !== action.payload),
+        [ACTION_TYPES.ADD_USER]: (state: any, action: any) => state.map(user => action.payload.id === user.id ? action.payload : user),
     },
     ADMIN_DEFAULT_STATE
 );

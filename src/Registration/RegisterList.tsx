@@ -1,20 +1,24 @@
+import moment from 'moment';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, List, ListItem } from 'react-native-elements';
+import { StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-elements';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import SwipeList from '../Common/SwipeList/SwipeList';
 import { Screens } from '../Screens';
-import { green } from '../theme/colors';
+import { green, red } from '../theme/colors';
+import { dateFormatter } from '../util/formatter';
 import { IRegister } from './RegisterListOperations';
 
 export interface IRegisterListProps {
     registerList: IRegister[];
-    addRegister: () => void;
-    selectRegister: (id: string) => void;
+    addRegister: (date: moment.Moment) => void;
+    removeRegister: (id: string) => void;
+    selectRegister: (register: IRegister) => void;
     navigation: any;
 }
 
 export interface IRegisterListState {
-    query: string;
-    modalVisible: boolean;
+    isDateTimePickerVisible: boolean;
 }
 
 export default class RegisterList extends React.Component<IRegisterListProps, IRegisterListState> {
@@ -23,34 +27,67 @@ export default class RegisterList extends React.Component<IRegisterListProps, IR
         title: 'Register List'
     };
 
+    constructor(props: IRegisterListProps) {
+        super(props);
+        this.state = {
+            isDateTimePickerVisible: false,
+        }
+    }
+
     public render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
-                    <List containerStyle={styles.listContainer}>
-                        {this.props.registerList.map((register: IRegister) =>
-                            <ListItem
-                                key={register.id}
-                                title={register.date.toDateString()}
-                                onPress={this.handleOnSelectRegister.bind(this, register.id)}
-                            />)}
-                    </List>
-                </ScrollView>
+                <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                />
+                <SwipeList
+                    dataSource={this.getDataSource}
+                    swipeButtons={this.getSwipeButtons}
+                    onPressRow={this.onPressRow}
+                    header={{
+                        chevron: true
+                    }}
+                />
                 <View>
-                    <Button title='Add' onPress={this.handleOnAddNewRegister} backgroundColor={green.green600}/>
+                    <Button title='Add' onPress={this.showDateTimePicker} backgroundColor={green.green600}/>
                 </View>
             </View>
         );
     }
 
-    private handleOnAddNewRegister = () => {
-        this.props.addRegister();
+    private showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+    private hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+    private handleDatePicked = (selectedDate: Date) => {
+        const date: moment.Moment = moment(selectedDate);
+        const canAddDate: boolean = this.props.registerList.every((register: IRegister) => register.date.toDate().getUTCDate() !== date.toDate().getUTCDate());
+        if (canAddDate) {
+            this.props.addRegister(date);
+        }
+        this.hideDateTimePicker();
     };
 
-    private handleOnSelectRegister = (id: string) => {
-        this.props.selectRegister(id);
+    private onPressRow = (register: IRegister) => {
+        this.props.selectRegister(register);
         this.props.navigation.navigate(Screens.REGISTER);
-    };
+    }
+
+    private get getDataSource() {
+        return this.props.registerList
+            .sort((a: IRegister, b: IRegister) => a.date.valueOf() - b.date.valueOf())
+            .map((register: IRegister) => ({ id: register.id, text: dateFormatter(register.date), data: register }));
+    }
+
+    private get getSwipeButtons() {
+        return [{
+            text: 'Delete',
+            backgroundColor: red.red600,
+            onPress: (id: string) => this.props.removeRegister(id)
+        }]
+    }
 }
 
 const styles = StyleSheet.create({

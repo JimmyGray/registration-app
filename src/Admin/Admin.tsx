@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Icon, Text } from 'react-native-elements';
-import List, { IListItem } from '../Common/List/List';
+import { Icon, Text } from 'react-native-elements';
+import SwipeList from '../Common/SwipeList/SwipeList';
 import { User } from '../Entity/User';
 import { Screens } from '../Screens';
 import { blue, red } from '../theme/colors';
 
 export interface IAdminProps {
+    onEditUser: (id: string) => void;
     users: User[];
     onRemoveUser: (id: string) => void;
     navigation: any;
@@ -22,16 +23,25 @@ export default class Admin extends React.Component<IAdminProps> {
         return (
             <View style={{ flex: 1 }}>
                 {this.getTitle()}
-                <List items={this.getListItems()}/>
+                <SwipeList
+                    dataSource={this.getDataSource}
+                    swipeButtons={this.getSwipeButtons}
+                    onPressRow={this.handleOnRowPress}
+                    header={{ chevron: true }}
+                />
                 <Icon
                     raised={true}
                     name='add'
                     color={blue.blue600}
                     reverse={true}
                     containerStyle={styles.icon}
-                    onPress={() => this.props.navigation.navigate(Screens.ADD_USER_FORM)}/>
+                    onPress={() => this.props.navigation.navigate(Screens.ADD_USER_BASIC, { user: new User() })}/>
             </View>
         );
+    }
+
+    private handleOnRowPress = (user: User) => {
+        this.props.navigation.navigate(Screens.ADD_USER_BASIC_EDIT, { user, title: 'Edit User'});
     }
 
     private getTitle() {
@@ -41,19 +51,21 @@ export default class Admin extends React.Component<IAdminProps> {
         return null;
     }
 
-    private getListItems(): IListItem[] {
-        return this.props.users.map((user: User) => {
-           return {
-               key: user.fullName,
-               title: user.fullName,
-               body: <Button title='Remove' backgroundColor={red.red600} onPress={() => this.onRemove(user.id)}
-               />
-           }
-        });
-    }
-
     private onRemove(id: string) {
         this.props.onRemoveUser(id);
+    }
+
+    private get getDataSource() {
+        return this.props.users.map((user: User) =>
+            ({ id: user.id, text: user.fullName, data: user }));
+    }
+
+    private get getSwipeButtons() {
+        return [{
+            text: 'Delete',
+            backgroundColor: red.red600,
+            onPress: (id) => this.onRemove(id)
+        }]
     }
 }
 

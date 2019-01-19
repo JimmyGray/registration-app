@@ -1,28 +1,28 @@
 import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
-import { Button, Card, FormInput, FormLabel } from 'react-native-elements';
+import { Button, FormInput, FormLabel } from 'react-native-elements';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Header } from 'react-navigation';
-import List, { IListItem } from '../../Common/List/List';
+import SwipeList from '../../Common/SwipeList/SwipeList';
 import { User } from '../../Entity/User';
 import { Screens } from '../../Screens';
 import { green, grey } from '../../theme/colors';
 import { uuid } from '../../util/uuid';
-import { ISignInUserAction } from '../RegisterListOperations';
+import { IRegisterEntry } from '../Register/RegisterOperations';
+import { IRegister } from '../RegisterListOperations';
+import moment from 'moment';
 
 export interface IRegistrationScreenProps {
     users: User[];
-    onSignInUser: (entry: ISignInUserAction) => void;
-    registrationId: string;
+    onSignInUser: (entry: IRegisterEntry) => void;
+    register: IRegister;
     navigation: any;
 }
 
 export interface IRegistrationScreenState {
     query: string;
-}
-
-export interface ISearchListItemProps {
-    user: User;
-    onSignInUser: (user: User) => void;
+    isDateTimePickerVisible: boolean;
+    user?: User;
 }
 
 export default class SearchUsers extends React.Component<IRegistrationScreenProps, IRegistrationScreenState> {
@@ -30,21 +30,43 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
     constructor(props: IRegistrationScreenProps) {
         super(props);
         this.state = {
-            query: ''
+            query: '',
+            isDateTimePickerVisible: false
         };
     }
 
     public render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior='padding'
-                                  keyboardVerticalOffset={Header.HEIGHT + 30}>
+                                  keyboardVerticalOffset={Header.HEIGHT + 10}>
+                <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                    mode='time'
+                />
                 <View>
                     <FormLabel>Search for existing members</FormLabel>
                     <FormInput
                         onChangeText={this.handleOnSearch}
                         containerStyle={{ borderBottomColor: grey.grey200, borderBottomWidth: 1 }}
                     />
-                    <List items={this.getFilteredUsers()} />
+                    <SwipeList
+                        dataSource={this.getDataSource}
+                        swipeButtons={[]}
+                        onPressRow={() => console.log('')}
+                        header={{
+                            chevron: false,
+                            button: {
+                                title: 'Sign In',
+                                backgroundColor: green.green600,
+                                onPress: (user) => this.showDateTimePicker(user),
+                                borderRadius: 5,
+                                containerViewStyle: { width: 100, height: 30 },
+                                buttonStyle: { padding: 5 }
+                            }
+                        }}
+                    />
                 </View>
                 <View>
                     <Button
@@ -64,54 +86,51 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
         });
     };
 
-    private getFilteredUsers(): IListItem[] {
+    private get getDataSource() {
         const { query } = this.state;
         if (query) {
             return this.props.users
                 .filter((user: User) => user.fullName.indexOf(query) !== -1)
                 .map((user: User) => ({
-                    key: user.id,
-                    title: user.fullName,
-                    headerRight: <Button
-                        title='Sign In'
-                        backgroundColor={green.green600}
-                        onPress={this.handleOnSignInUser.bind(this, user)}
-                        borderRadius={5}
-                        containerViewStyle={{ width: 100 }}
-                    />
+                    id: user.id,
+                    text: user.fullName,
+                    data: user
                 }));
         }
         return [];
     }
 
-    private handleOnSignInUser = (user: User) => {
-        this.props.onSignInUser(
-            {
-                id: this.props.registrationId,
-                registration: {
-                    id: uuid(),
-                    fullName: user.fullName,
-                    entry: new Date()
-                }
-            });
-        this.props.navigation.navigate(Screens.REGISTER);
-    };
-
     private handleOnClose = () => {
         this.props.navigation.navigate(Screens.REGISTER);
     };
-}
 
-export const SearchListItem = (props: ISearchListItemProps) => (
-    <Card title={props.user.fullName} containerStyle={styles.listItemContainer}>
-        <Button
-            title='SIGN IN'
-            icon={{ name: 'done' }}
-            backgroundColor={green.green600}
-            onPress={() => props.onSignInUser(props.user)}
-        />
-    </Card>
-);
+    private showDateTimePicker = (user: User) => this.setState({ isDateTimePickerVisible: true, user });
+
+    private hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false, user: undefined });
+
+    private handleDatePicked = (selectedDate: Date) => {
+        const { register } = this.props;
+        const { user } = this.state;
+        const { date } = register;
+        let entry = moment();
+        entry.set({
+            date: date.date(),
+            month: date.month(),
+            year: date.year(),
+            hours: selectedDate.getHours(),
+            minutes: selectedDate.getMinutes(),
+            seconds: selectedDate.getSeconds()
+        });
+        this.props.onSignInUser({
+            parentId: register.id,
+            id: uuid(),
+            fullName: user!.fullName,
+            entry
+        });
+        this.hideDateTimePicker();
+        this.props.navigation.navigate(Screens.REGISTER);
+    };
+}
 
 
 const styles = StyleSheet.create({

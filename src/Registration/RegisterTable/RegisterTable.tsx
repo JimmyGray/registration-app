@@ -1,22 +1,26 @@
+import moment from 'moment';
 import * as React from 'react';
-import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Header } from 'react-navigation';
 import { grey, red } from '../../theme/colors';
-import { dateFormatter } from '../../util/formatter';
-import { IRegisterEntry } from '../Register/RegisterOperations';
-import { IDeleteEntryAction, IRegister, ISignOutUserAction } from '../RegisterListOperations';
-import { Row, RowType } from './Row';
+import { timeFormatter } from '../../util/formatter';
+import { IRegisterEntry, ISignOutUserAction } from '../Register/RegisterOperations';
+import { IRegister } from '../RegisterListOperations';
+import { Row, RowType, TextColumn } from './Row';
 
 export interface IRegisterTableProps {
     register: IRegister;
-    onSignOutUser: (entry: ISignOutUserAction) => void;
-    onDeleteEntry: (entry: IDeleteEntryAction) => void;
+    registerEntries: IRegisterEntry[];
+    onSignOutUser: (payload: ISignOutUserAction) => void;
+    onDeleteEntry: (id: string) => void;
 }
 
 export interface IRegisterTableState {
     overlay: boolean;
     selectedId: string;
+    isDateTimePickerVisible: boolean;
 }
 
 export default class RegisterTable extends React.Component<IRegisterTableProps, IRegisterTableState> {
@@ -25,20 +29,27 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
         super(props);
         this.state = {
             overlay: false,
+            isDateTimePickerVisible: false,
             selectedId: ''
-        }
+        };
     }
 
     public render() {
         return (
             <View style={{ flex: 1, height: '90%' }}>
-                <Text>{this.props.register.id}</Text>
+                <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                    minimumDate={this.getMinimumDate}
+                    mode='time'
+                />
                 <Modal visible={this.state.overlay} onRequestClose={() => console.log('Modal Closed')}>
                     <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Header.HEIGHT + 30}>
                         <View>
                             <Button
                                 title='Delete'
-                                icon={{ name: 'trash' }}
+                                icon={{ name: 'trash', type: 'evilicon' }}
                                 backgroundColor={red.red500}
                                 onPress={this.handleOnDelete}
                             />
@@ -46,35 +57,22 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                         <View>
                             <Button
                                 title='Close'
-                                icon={{ name: 'close' }}
                                 backgroundColor={grey.grey600}
                                 onPress={this.handleOnClose}
                             />
                         </View>
                     </KeyboardAvoidingView>
                 </Modal>
-                <Row
-                    key='guestbook-header'
-                    items={[
-                        {
-                            type: RowType.TEXT,
-                            value: 'Name'
-                        },
-                        {
-                            type: RowType.TEXT,
-                            value: 'In'
-                        },
-                        {
-                            type: RowType.TEXT,
-                            value: 'Out'
-                        }
-                    ]}
-                />
-                <ScrollView style={{ flex: 1 }}>
-                {this.props.register.registrations
-                    .map((registerEntry: IRegisterEntry, idx) =>
+                <View style={styles.rowContainer}>
+                    <TextColumn value='Name' textStyle={styles.columnHeader}/>
+                    <TextColumn value='In' textStyle={styles.columnHeader}/>
+                    <TextColumn value='Out' textStyle={styles.columnHeader}/>
+                </View>
+                <ScrollView>
+                {this.props.registerEntries
+                    .map((registerEntry: IRegisterEntry) =>
                         <Row
-                            key={registerEntry.id + idx}
+                            key={registerEntry.id}
                             onLongPress={this.onLongPress.bind(this, registerEntry.id)}
                             items={[
                                 {
@@ -83,7 +81,7 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                                 },
                                 {
                                     type: RowType.TEXT,
-                                    value: dateFormatter(registerEntry.entry)
+                                    value: timeFormatter(registerEntry.entry)
                                 },
                                 this.getExitItem(registerEntry)
                             ]}
@@ -93,22 +91,18 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
         );
     }
 
-    private getExitItem(guestBookEntry: IRegisterEntry) {
-        if (guestBookEntry.exit && guestBookEntry.exit.valueOf() > 0) {
+    private getExitItem(entry: IRegisterEntry) {
+        if (entry.exit && entry.exit.valueOf() > 0) {
             return {
                 type: RowType.TEXT,
-                value: dateFormatter(guestBookEntry.entry)
+                value: timeFormatter(entry.exit)
             };
         }
         return {
             type: RowType.BUTTON,
             value: 'Sign Out',
-            onPress: this.handleOnSignOutUser.bind(this, guestBookEntry.id)
+            onPress: this.showDateTimePicker.bind(this, entry.id)
         };
-    }
-
-    private handleOnSignOutUser = (registrationId: string) => {
-        this.props.onSignOutUser({ id: this.props.register.id, registrationId });
     }
 
     private onLongPress = (selectedId: string) => {
@@ -116,28 +110,74 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
             overlay: !this.state.overlay,
             selectedId
         });
-    }
+    };
 
     private handleOnDelete = () => {
-        this.props.onDeleteEntry({ id: this.props.register.id, registrationId: this.state.selectedId });
+        this.props.onDeleteEntry(this.state.selectedId!);
         this.setState({
             overlay: false,
             selectedId: ''
         });
-    }
+    };
 
     private handleOnClose = () => {
         this.setState({
             overlay: false,
             selectedId: ''
         });
+    };
+
+    private get getMinimumDate(): Date | undefined {
+        const { selectedId } = this.state;
+        const registerEntry: IRegisterEntry | undefined = this.props.registerEntries.find(x => x.id === selectedId);
+        if (registerEntry) {
+            return registerEntry.entry.toDate();
+        }
+        return undefined;
     }
+
+    private showDateTimePicker = (selectedId: string) => this.setState({ isDateTimePickerVisible: true, selectedId });
+
+    private hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false, selectedId: '' });
+
+    private handleDatePicked = (selectedDate: Date) => {
+        const { register } = this.props;
+        const { selectedId } = this.state;
+        const { date } = register;
+        const exit = moment(selectedDate);
+        exit.set({
+            date: date.date(),
+            month: date.month(),
+            year: date.year(),
+            hours: selectedDate.getHours(),
+            minutes: selectedDate.getMinutes(),
+            seconds: selectedDate.getSeconds()
+        });
+        this.props.onSignOutUser({
+            id: selectedId,
+            exit
+        });
+        this.hideDateTimePicker();
+    };
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         marginBottom: 10
+    },
+    dateTitle: {
+        textAlign: 'center'
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: grey.grey200,
+        height: 40
+    },
+    columnHeader: {
+        color: grey.grey400,
+        fontWeight: 'bold'
     }
 });

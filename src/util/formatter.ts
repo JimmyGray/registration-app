@@ -1,6 +1,9 @@
-export const dateFormatter = (date: Date | undefined) => {
-    if (date) {
-        return `${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    }
-    return '';
-}
+import moment from 'moment';
+
+export const timeFormatter = (value: moment.Moment) => {
+    return value.format('HH:mm');
+};
+
+export const dateFormatter = (value: moment.Moment) => {
+    return value.format('DD/MM/YYYY');
+};

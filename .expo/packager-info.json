@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19006,
-  "packagerPid": 3814,
-  "expoServerNgrokUrl": "https://wa-k6b.jamesbriangray.registration-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.wa-k6b.jamesbriangray.registration-app.exp.direct",
-  "ngrokPid": 3828
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

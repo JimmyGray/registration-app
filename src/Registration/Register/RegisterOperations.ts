@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { createAction, handleActions } from 'redux-actions';
 
 export enum ACTION_TYPES {
@@ -7,10 +8,16 @@ export enum ACTION_TYPES {
 }
 
 export interface IRegisterEntry {
+    parentId: string;
     id: string;
     fullName: string;
-    entry: Date;
-    exit?: Date;
+    entry: moment.Moment;
+    exit?: moment.Moment;
+}
+
+export interface ISignOutUserAction {
+    id: string;
+    exit: moment.Moment;
 }
 
 export const signInUserAction = (guestEntry: IRegisterEntry) => createAction(ACTION_TYPES.SIGN_IN_USER)(guestEntry);
@@ -19,16 +26,16 @@ export const deleteEntryAction = (id: string) => createAction(ACTION_TYPES.DELET
 
 export const REGISTER_DEFAULT_STATE: IRegisterEntry[] = [];
 
-export const registerReducer = handleActions(
+export const registerEntriesReducer = handleActions(
     {
         [ACTION_TYPES.SIGN_IN_USER]: (state: any, action: any) => state.concat(action.payload),
         [ACTION_TYPES.DELETE_ENTRY]: (state: any, action: any) => state.filter((entry: IRegisterEntry) => entry.id !== action.payload),
         [ACTION_TYPES.SIGN_OUT_USER]: (state: IRegisterEntry[], action: any) => {
             return state.map(guestBookEntry => {
-                if (guestBookEntry.id === action.payload) {
+                if (guestBookEntry.id === action.payload.id) {
                     return {
                         ...guestBookEntry,
-                        exit: new Date()
+                        exit: action.payload.exit
                     }
                 }
                 return guestBookEntry;

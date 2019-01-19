@@ -1,16 +1,13 @@
-import { IUser } from '../store/createStore';
+import { Allergy } from '../Admin/AddUserForm/AllergiesForm/AllergiesForm';
 import { uuid } from '../util/uuid';
 
-export class User implements IUser {
+export class User {
     public constructor(
-        public id: string = '',
-        public firstName: string = '',
-        public surname: string =''
-    ) {
-        this.id = uuid();
-        this.firstName = firstName;
-        this.surname = surname;
-    }
+        public readonly id: string = uuid(),
+        public readonly firstName: string = '',
+        public readonly surname: string = '',
+        public readonly allergies: Allergy[] = []
+    ) {}
 
     public cloneWithProps(props: Partial<User>) {
         return Object.assign(this, props);

@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
         marginLeft: spacing.small
     },
     title: {
-        fontSize: fontSize.medium
+        fontSize: fontSize.small
     }
 });
