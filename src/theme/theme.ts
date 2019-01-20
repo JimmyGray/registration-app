@@ -1,23 +1,9 @@
-import { Dimensions, PixelRatio, Platform } from 'react-native';
-
-const {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT
-} = Dimensions.get('window');
-
-// based on iphone 5s's scale
-const scale = SCREEN_WIDTH / 320;
-
-export function normalize(size: any) {
-    const newSize = size * scale ;
-    if (Platform.OS === 'ios') {
-        return Math.round(PixelRatio.roundToNearestPixel(newSize));
-    }
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
-}
+import { normalize } from "react-native-elements";
+import { Header } from "react-navigation";
 
 export const fontSize = {
-    xSmall: normalize(12),
+    xxSmall: normalize(12),
+    xSmall: normalize(14),
     small: normalize(15),
     medium: normalize(17),
     large: normalize(20),
@@ -32,6 +18,8 @@ export const spacing = {
     large: normalize(20),
     xLarge: normalize(24)
 };
+
+export const keyboardAvoidingView = normalize(Header.HEIGHT + 10);
 
 // https://refactoringui.com/previews/building-your-color-palette/
 

@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import SwipeList from '../Common/SwipeList/SwipeList';
 import { Screens } from '../Screens';
-import { green, red } from '../theme/colors';
+import { green, red } from '../theme/theme';
 import { dateFormatter } from '../util/formatter';
 import { IRegister } from './RegisterListOperations';
 
@@ -51,7 +51,7 @@ export default class RegisterList extends React.Component<IRegisterListProps, IR
                     }}
                 />
                 <View>
-                    <Button title='Add' onPress={this.showDateTimePicker} backgroundColor={green.green600}/>
+                    <Button title='Add' onPress={this.showDateTimePicker} backgroundColor={green.green700}/>
                 </View>
             </View>
         );
@@ -84,7 +84,7 @@ export default class RegisterList extends React.Component<IRegisterListProps, IR
     private get getSwipeButtons() {
         return [{
             text: 'Delete',
-            backgroundColor: red.red600,
+            backgroundColor: red.red700,
             onPress: (id: string) => this.props.removeRegister(id)
         }]
     }

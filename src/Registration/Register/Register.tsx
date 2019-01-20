@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { User } from '../../Entity/User';
 import { Screens } from '../../Screens';
-import { blue } from '../../theme/colors';
+import { blue, green } from '../../theme/theme';
 import { dateFormatter } from '../../util/formatter';
 import { IRegister } from '../RegisterListOperations';
 import RegisterTable from '../RegisterTable/RegisterTable';
@@ -70,7 +70,7 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
                     reverse={true}
                     name='add'
                     containerStyle={styles.icon}
-                    color={blue.blue600}
+                    color={green.green700}
                     onPress={this.onModalPress}/>
             </View>
         );

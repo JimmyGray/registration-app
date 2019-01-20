@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Badge, Button, Text } from 'react-native-elements';
-import { grey, red } from '../../theme/colors';
+import { fontSize, grey, red } from '../../theme/theme';
 
 export enum RowType {
     TEXT = 'TEXT',
@@ -26,11 +26,11 @@ export interface IColumnProps {
     textStyle?: any;
 }
 
-export const TextColumn = (props: IColumnProps) => <View style={styles.column}><Text style={props.textStyle}>{props.value}</Text></View>;
+export const TextColumn = (props: IColumnProps) => <View style={styles.column}><Text style={{ ...props.textStyle, ...styles.text }}>{props.value}</Text></View>;
 
 export const BadgeColumn = (props: IColumnProps) => (
     <View style={styles.column}>
-        <Badge containerStyle={{ backgroundColor: red.red500 }}>
+        <Badge containerStyle={{ backgroundColor: red.red700 }}>
             <Text>{props.value}</Text>
         </Badge>
     </View>
@@ -41,7 +41,7 @@ export const ButtonColumn = (props: IColumnProps) => (
         <Button
             buttonStyle={styles.button}
             title={props.value}
-            backgroundColor={red.reda700}
+            backgroundColor={red.red700}
             onPress={props.onPress}
             borderRadius={5}
         />
@@ -86,7 +86,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+    },
+    text: {
+        fontSize: fontSize.xSmall
     },
     button: {
         height: 30,

@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
-import { Header } from 'react-navigation';
 import { User } from '../../../Entity/User';
-import { Screens } from '../../../Screens';
-import { green } from '../../../theme/colors';
+import { green, keyboardAvoidingView } from '../../../theme/theme';
 
 export interface IAllergiesFormProps {
     navigation: any;
@@ -40,8 +38,9 @@ export default class AllergiesForm extends React.Component<IAllergiesFormProps, 
 
     public render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior='padding'
-                                  keyboardVerticalOffset={Header.HEIGHT + 10}>
+            <KeyboardAvoidingView style={styles.container}
+                                  behavior='padding'
+                                  keyboardVerticalOffset={keyboardAvoidingView}>
                 <View>
                     <CheckBox
                         title='Nuts'
@@ -77,7 +76,7 @@ export default class AllergiesForm extends React.Component<IAllergiesFormProps, 
                 <View>
                     <Button
                         title='Done'
-                        backgroundColor={green.green600}
+                        backgroundColor={green.green700}
                         onPress={this.handleOnNext}
                     />
                 </View>

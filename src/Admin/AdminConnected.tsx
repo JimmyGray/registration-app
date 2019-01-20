@@ -8,6 +8,7 @@ import { removeUserAction } from './AdminOperations';
 const mapStateToProps = (state: IAppState, ownProps: any) => ({
     users: state.users,
     navigation: ownProps.navigation,
+    registerEntries: state.registerEntries
 });
 
 const mapDispatchToProps = (dispatch: any) => bindActionCreators({

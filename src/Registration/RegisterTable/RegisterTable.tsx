@@ -3,8 +3,7 @@ import * as React from 'react';
 import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Header } from 'react-navigation';
-import { grey, red } from '../../theme/colors';
+import { grey, keyboardAvoidingView, red } from '../../theme/theme';
 import { timeFormatter } from '../../util/formatter';
 import { IRegisterEntry, ISignOutUserAction } from '../Register/RegisterOperations';
 import { IRegister } from '../RegisterListOperations';
@@ -45,12 +44,15 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                     mode='time'
                 />
                 <Modal visible={this.state.overlay} onRequestClose={() => console.log('Modal Closed')}>
-                    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={Header.HEIGHT + 30}>
+                    <KeyboardAvoidingView
+                        style={styles.container}
+                        behavior='padding'
+                        keyboardVerticalOffset={keyboardAvoidingView}>
                         <View>
                             <Button
                                 title='Delete'
                                 icon={{ name: 'trash', type: 'evilicon' }}
-                                backgroundColor={red.red500}
+                                backgroundColor={red.reda200}
                                 onPress={this.handleOnDelete}
                             />
                         </View>
@@ -101,8 +103,14 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
         return {
             type: RowType.BUTTON,
             value: 'Sign Out',
-            onPress: this.showDateTimePicker.bind(this, entry.id)
+            onPress: this.handleOnQuickSignOut.bind(this, entry.id)
         };
+    }
+
+    private handleOnQuickSignOut = (selectedId: string) => {
+        this.setState({
+            selectedId
+        }, () => this.handleDatePicked(new Date()));
     }
 
     private onLongPress = (selectedId: string) => {
@@ -136,7 +144,7 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
         return undefined;
     }
 
-    private showDateTimePicker = (selectedId: string) => this.setState({ isDateTimePickerVisible: true, selectedId });
+    // private showDateTimePicker = (selectedId: string) => this.setState({ isDateTimePickerVisible: true, selectedId });
 
     private hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false, selectedId: '' });
 

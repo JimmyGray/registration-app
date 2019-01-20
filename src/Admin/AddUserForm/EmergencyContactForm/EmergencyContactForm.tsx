@@ -13,10 +13,10 @@ export interface IAddUserFormState {
     user: User;
 }
 
-export default class BasicDetailsForm extends React.Component<IAddUserFormProps, IAddUserFormState> {
+export default class EmergencyContactForm extends React.Component<IAddUserFormProps, IAddUserFormState> {
 
     public static navigationOptions = {
-        title: 'Basic Details'
+        title: 'Emergency Contact'
     };
 
     constructor(props: IAddUserFormProps) {
@@ -31,10 +31,13 @@ export default class BasicDetailsForm extends React.Component<IAddUserFormProps,
             <KeyboardAvoidingView style={styles.container} behavior='padding'
                                   keyboardVerticalOffset={keyboardAvoidingView}>
                 <View>
-                    <FormLabel>First Name</FormLabel>
-                    <FormInput value={this.state.user.firstName} onChangeText={(value) => this.handleOnChange(value, 'firstName')}/>
-                    <FormLabel>Surname</FormLabel>
-                    <FormInput value={this.state.user.surname} onChangeText={(value) => this.handleOnChange(value, 'surname')}/>
+                    <FormLabel>Emergency Contact</FormLabel>
+                    <FormInput
+                        value={this.state.user.emergencyContact}
+                        onChangeText={(value) => this.handleOnChange(value, 'emergencyContact')}
+                        textContentType='telephoneNumber'
+                        keyboardType='numeric'
+                    />
                 </View>
                 <View>
                     <Button
@@ -49,17 +52,13 @@ export default class BasicDetailsForm extends React.Component<IAddUserFormProps,
     }
 
     private handleOnChange = (value: string, property: string) => {
-        const user: User = this.state.user.cloneWithProps({
-            [property]: value
-        });
-        this.setState({
-            user
-        });
+        const user: User = this.state.user.cloneWithProps({[property]: value });
+        this.setState({ user });
     };
 
     private handleOnNext = () => {
         const { user } = this.state;
-        this.props.navigation.navigate(Screens.ADD_USER_EMERGENCY_CONTACT, { user });
+        this.props.navigation.navigate(Screens.ADD_USER_ALLERGIES, { user });
     };
 
     private canSubmit() {

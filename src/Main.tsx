@@ -4,7 +4,9 @@ import { Button, Icon } from 'react-native-elements';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
 import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
+import EmergencyContactForm from "./Admin/AddUserForm/EmergencyContactForm/EmergencyContactForm";
 import AdminConnected from './Admin/AdminConnected';
+import UserProfile from "./Admin/UserProfile";
 import RegisterConnected from './Registration/Register/RegisterConnected';
 import RegisterListConnected from './Registration/RegisterListConnected';
 import SearchUsersConnected from './Registration/SearchModal/SearchUsersConnected';
@@ -12,7 +14,7 @@ import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
 import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
 import ReportsConnected from './Reports/ReportsConnected';
 import { Screens } from './Screens';
-import { blue, grey, teal, white } from './theme/colors';
+import { blue, grey, teal, white } from './theme/theme';
 
 export interface IAppProps {
     navigation: any;
@@ -77,6 +79,8 @@ const AppNavigator = createStackNavigator({
     [Screens.REGISTER]: RegisterConnected,
     [Screens.ADMIN]: AdminConnected,
     [Screens.ADD_USER_BASIC]: BasicDetailsForm,
+    [Screens.USER_PROFILE]: UserProfile,
+    [Screens.ADD_USER_EMERGENCY_CONTACT]: EmergencyContactForm,
     [Screens.ADD_USER_ALLERGIES]: AllergiesFormConnected,
     [Screens.SEARCH_USER]: SearchUsersConnected,
     [Screens.ALLERGIES]: AllergiesConnected,

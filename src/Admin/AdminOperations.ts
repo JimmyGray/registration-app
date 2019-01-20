@@ -7,6 +7,7 @@ export enum ACTION_TYPES {
 }
 export const ADMIN_DEFAULT_STATE: IAdminState = [
     new User('123', 'James', 'Gray'),
+    new User('123', 'Jamesashdjashdj', 'askjdjashdsj'),
 ];
 
 export interface User {

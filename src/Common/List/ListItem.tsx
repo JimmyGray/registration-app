@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { grey } from '../../theme/colors';
+import { grey } from '../../theme/theme';
 import ListBody from './ListBody';
 import ListHeader, { IIcon } from './ListHeader';
 

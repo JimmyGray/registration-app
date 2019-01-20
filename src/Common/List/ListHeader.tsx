@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
-import { fontSize, spacing } from '../../theme/colors';
+import { fontSize, spacing } from '../../theme/theme';
 
 export interface IIcon {
     name: string;

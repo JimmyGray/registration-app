@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ListView, ListViewDataSource, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Button, Icon, Text } from 'react-native-elements';
+import { Button, Icon, normalize, Text } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
-import { fontSize, grey, white } from '../../theme/colors';
+import { fontSize, grey, white } from '../../theme/theme';
 
 export interface ISwipeItem<T> {
     id: string;
@@ -56,6 +56,7 @@ export default class SwipeList<T> extends React.Component<ISwipeListProps<T>, IS
         return (
             <ListView
                 dataSource={this.state.dataSource}
+                keyboardShouldPersistTaps='always'
                 enableEmptySections={true}
                 renderRow={this.renderRow}/>
         );
@@ -81,7 +82,7 @@ export default class SwipeList<T> extends React.Component<ISwipeListProps<T>, IS
 
     private getSwipeItemContent(swipeItem: ISwipeItem<T>): JSX.Element | null {
         if (swipeItem.text) {
-            return <Text style={styles.text}>{swipeItem.text}</Text>;
+            return <Text style={styles.text} numberOfLines={1}>{swipeItem.text}</Text>;
         } else if (swipeItem.component) {
             return swipeItem.component
         }
@@ -122,13 +123,14 @@ const styles = StyleSheet.create({
     },
     swipeout: {
         borderBottomWidth: 1,
-        borderBottomColor: grey.grey200
+        borderBottomColor: grey.grey200,
     },
     text: {
         flex: 2,
-        fontSize: fontSize.small,
-        padding: 10,
-        borderBottomColor: grey.grey200
+        fontSize: fontSize.medium,
+        padding: normalize(8),
+        borderBottomColor: grey.grey200,
+        overflow: 'hidden'
     },
     rowContainer: {
         display: 'flex',

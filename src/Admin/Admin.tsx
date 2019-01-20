@@ -4,11 +4,13 @@ import { Icon, Text } from 'react-native-elements';
 import SwipeList from '../Common/SwipeList/SwipeList';
 import { User } from '../Entity/User';
 import { Screens } from '../Screens';
-import { blue, red } from '../theme/colors';
+import { blue, grey, red } from '../theme/theme';
+import { IRegisterEntry } from "../Registration/Register/RegisterOperations";
 
 export interface IAdminProps {
     onEditUser: (id: string) => void;
     users: User[];
+    registerEntries: IRegisterEntry[];
     onRemoveUser: (id: string) => void;
     navigation: any;
 }
@@ -41,7 +43,8 @@ export default class Admin extends React.Component<IAdminProps> {
     }
 
     private handleOnRowPress = (user: User) => {
-        this.props.navigation.navigate(Screens.ADD_USER_BASIC, { user });
+        const { registerEntries } = this.props;
+        this.props.navigation.navigate(Screens.USER_PROFILE, { user, registerEntries });
     }
 
     private getTitle() {
@@ -55,17 +58,31 @@ export default class Admin extends React.Component<IAdminProps> {
         this.props.onRemoveUser(id);
     }
 
+    private onEdit(id: string) {
+        const user: User | undefined = this.props.users.find(user => user.id === id);
+        if (user) {
+            this.props.navigation.navigate(Screens.ADD_USER_BASIC, { user });
+        }
+    }
+
     private get getDataSource() {
         return this.props.users.map((user: User) =>
             ({ id: user.id, text: user.fullName, data: user }));
     }
 
     private get getSwipeButtons() {
-        return [{
-            text: 'Delete',
-            backgroundColor: red.red600,
-            onPress: (id) => this.onRemove(id)
-        }]
+        return [
+            {
+                text: 'Edit',
+                backgroundColor: grey.grey300,
+                onPress: (id) => this.onEdit(id)
+            },
+            {
+                text: 'Delete',
+                backgroundColor: red.red700,
+                onPress: (id) => this.onRemove(id)
+            },
+        ]
     }
 }
 

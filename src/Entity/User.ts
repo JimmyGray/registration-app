@@ -6,6 +6,7 @@ export class User {
         public readonly id: string = uuid(),
         public readonly firstName: string = '',
         public readonly surname: string = '',
+        public readonly emergencyContact: string = '',
         public readonly allergies: Allergy[] = []
     ) {}
 

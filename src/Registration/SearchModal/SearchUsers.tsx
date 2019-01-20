@@ -1,16 +1,15 @@
+import moment from 'moment';
 import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
-import { Button, FormInput, FormLabel } from 'react-native-elements';
+import { Button, FormInput, FormLabel, normalize } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Header } from 'react-navigation';
 import SwipeList from '../../Common/SwipeList/SwipeList';
 import { User } from '../../Entity/User';
 import { Screens } from '../../Screens';
-import { green, grey } from '../../theme/colors';
+import { green, grey, keyboardAvoidingView, red } from '../../theme/theme';
 import { uuid } from '../../util/uuid';
 import { IRegisterEntry } from '../Register/RegisterOperations';
 import { IRegister } from '../RegisterListOperations';
-import moment from 'moment';
 
 export interface IRegistrationScreenProps {
     users: User[];
@@ -37,8 +36,9 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
 
     public render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior='padding'
-                                  keyboardVerticalOffset={Header.HEIGHT + 10}>
+            <KeyboardAvoidingView style={styles.container}
+                                  behavior='padding'
+                                  keyboardVerticalOffset={keyboardAvoidingView}>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this.handleDatePicked}
@@ -59,11 +59,11 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
                             chevron: false,
                             button: {
                                 title: 'Sign In',
-                                backgroundColor: green.green600,
+                                backgroundColor: green.green700,
                                 onPress: (user) => this.showDateTimePicker(user),
                                 borderRadius: 5,
-                                containerViewStyle: { width: 100, height: 30 },
-                                buttonStyle: { padding: 5 }
+                                containerViewStyle: { width: normalize(110), height: normalize(30), justifyContent: 'center' },
+                                buttonStyle: { padding: normalize(5) }
                             }
                         }}
                     />
@@ -71,8 +71,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
                 <View>
                     <Button
                         title='Close'
-                        icon={{ name: 'close' }}
-                        backgroundColor={grey.grey600}
+                        backgroundColor={red.red700}
                         onPress={this.handleOnClose}
                     />
                 </View>
@@ -112,7 +111,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
         const { register } = this.props;
         const { user } = this.state;
         const { date } = register;
-        let entry = moment();
+        const entry = moment();
         entry.set({
             date: date.date(),
             month: date.month(),
