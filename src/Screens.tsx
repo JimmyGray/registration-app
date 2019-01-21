@@ -1,5 +1,10 @@
 export enum Screens {
+    LOADING = 'LOADING',
+    SIGN_UP = 'SIGN_UP',
+    LOGIN = 'LOGIN',
     MAIN = 'MAIN',
+    MAIN_STACK = 'MAIN_STACK',
+    AUTH_STACK = 'AUTH_STACK',
     REPORTS = 'REPORTS',
     REGISTER_LIST = 'REGISTER_LIST',
     REGISTER = 'REGISTER',

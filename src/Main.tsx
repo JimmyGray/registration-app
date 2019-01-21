@@ -1,12 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
 import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
 import EmergencyContactForm from "./Admin/AddUserForm/EmergencyContactForm/EmergencyContactForm";
 import AdminConnected from './Admin/AdminConnected';
 import UserProfile from "./Admin/UserProfile";
+import { firebaseApp } from './App';
+import Loading from "./Auth/Loading";
+import LoginAuth from './Auth/LoginAuth';
+import SignUp from "./Auth/SignUp";
 import RegisterConnected from './Registration/Register/RegisterConnected';
 import RegisterListConnected from './Registration/RegisterListConnected';
 import SearchUsersConnected from './Registration/SearchModal/SearchUsersConnected';
@@ -43,6 +47,13 @@ class Main extends React.Component<IAppProps> {
                     onPress={() => this.props.navigation.navigate(Screens.REPORTS)}
                     buttonStyle={styles.button}
                 />
+                <Button
+                    icon={{ name: 'notebook', type: 'simple-line-icon' }}
+                    title='Logout'
+                    backgroundColor={teal.teal600}
+                    onPress={this.handleLogout}
+                    buttonStyle={styles.button}
+                />
                 <Icon
                     raised={true}
                     name='person'
@@ -52,6 +63,10 @@ class Main extends React.Component<IAppProps> {
                     onPress={() => this.props.navigation.navigate(Screens.ADMIN)}/>
             </View>
         );
+    }
+
+    private handleLogout = async () => {
+        await firebaseApp.auth().signOut();
     }
 }
 
@@ -72,7 +87,13 @@ const styles = StyleSheet.create({
     }
 });
 
-const AppNavigator = createStackNavigator({
+const AuthFlow = createSwitchNavigator({
+    [Screens.LOADING]: Loading,
+    [Screens.SIGN_UP]: SignUp,
+    [Screens.LOGIN]: LoginAuth,
+});
+
+const MainFlow = createStackNavigator({
     [Screens.MAIN]: Main,
     [Screens.REPORTS]: ReportsConnected,
     [Screens.REGISTER_LIST]: RegisterListConnected,
@@ -86,5 +107,15 @@ const AppNavigator = createStackNavigator({
     [Screens.ALLERGIES]: AllergiesConnected,
     [Screens.ATTENDANCES]: AttendancesConnected
 });
+
+const AppNavigator = createStackNavigator({
+        auth: AuthFlow,
+        main: MainFlow
+    },
+    {
+        navigationOptions: {
+            header: null
+        }
+    });
 
 export const AppNavigation = createAppContainer(AppNavigator);
