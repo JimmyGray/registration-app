@@ -61,7 +61,7 @@ export default class Login extends React.Component<ILoginAuthProps, ILoginAuthSt
         firebaseApp
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then(() => this.props.navigation.navigate(Screens.MAIN_STACK))
+            .then(() => this.props.navigation.navigate(Screens.MAIN))
             .catch(error => this.setState({ errorMessage: error.message }))
     }
 }
