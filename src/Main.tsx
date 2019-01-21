@@ -109,8 +109,8 @@ const MainFlow = createStackNavigator({
 });
 
 const AppNavigator = createStackNavigator({
-        auth: AuthFlow,
-        main: MainFlow
+        authFlow: AuthFlow,
+        mainFlow: MainFlow
     },
     {
         navigationOptions: {
