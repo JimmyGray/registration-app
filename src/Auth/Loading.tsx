@@ -1,7 +1,8 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { firebaseApp } from "../App";
-import { Screens } from "../Screens";
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-elements';
+import { firebaseApp } from '../App';
+import { Screens } from '../Screens';
 
 export interface ILoadingProps {
     navigation: any;
@@ -16,7 +17,7 @@ export default class Loading extends React.Component<ILoadingProps> {
     public componentDidMount() {
         firebaseApp.auth().onAuthStateChanged(user => {
             console.log('user!', user);
-            this.props.navigation.navigate(user ? Screens.MAIN : Screens.SIGN_UP)
+            this.props.navigation.navigate(user ? Screens.MAIN : Screens.LOGIN)
         })
     }
 

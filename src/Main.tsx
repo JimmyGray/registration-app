@@ -4,13 +4,13 @@ import { Button, Icon } from 'react-native-elements';
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
 import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
-import EmergencyContactForm from "./Admin/AddUserForm/EmergencyContactForm/EmergencyContactForm";
+import EmergencyContactForm from './Admin/AddUserForm/EmergencyContactForm/EmergencyContactForm';
 import AdminConnected from './Admin/AdminConnected';
-import UserProfile from "./Admin/UserProfile";
+import UserProfile from './Admin/UserProfile';
 import { firebaseApp } from './App';
-import Loading from "./Auth/Loading";
+import Loading from './Auth/Loading';
 import LoginAuth from './Auth/LoginAuth';
-import SignUp from "./Auth/SignUp";
+import SignUp from './Auth/SignUp';
 import RegisterConnected from './Registration/Register/RegisterConnected';
 import RegisterListConnected from './Registration/RegisterListConnected';
 import SearchUsersConnected from './Registration/SearchModal/SearchUsersConnected';
@@ -18,7 +18,7 @@ import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
 import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
 import ReportsConnected from './Reports/ReportsConnected';
 import { Screens } from './Screens';
-import { blue, grey, teal, white } from './theme/theme';
+import { blue, grey, red, teal, white } from './theme/theme';
 
 export interface IAppProps {
     navigation: any;
@@ -48,9 +48,8 @@ class Main extends React.Component<IAppProps> {
                     buttonStyle={styles.button}
                 />
                 <Button
-                    icon={{ name: 'notebook', type: 'simple-line-icon' }}
                     title='Logout'
-                    backgroundColor={teal.teal600}
+                    backgroundColor={red.red700}
                     onPress={this.handleLogout}
                     buttonStyle={styles.button}
                 />
@@ -67,7 +66,7 @@ class Main extends React.Component<IAppProps> {
 
     private handleLogout = async () => {
         await firebaseApp.auth().signOut();
-    }
+    };
 }
 
 const styles = StyleSheet.create({
@@ -78,7 +77,9 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        flex: 1,
+        height: '100%'
     },
     icon: {
         position: 'absolute',
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
 const AuthFlow = createSwitchNavigator({
     [Screens.LOADING]: Loading,
     [Screens.SIGN_UP]: SignUp,
-    [Screens.LOGIN]: LoginAuth,
+    [Screens.LOGIN]: LoginAuth
 });
 
 const MainFlow = createStackNavigator({
@@ -108,14 +109,9 @@ const MainFlow = createStackNavigator({
     [Screens.ATTENDANCES]: AttendancesConnected
 });
 
-const AppNavigator = createStackNavigator({
+const AppNavigator = createSwitchNavigator({
         authFlow: AuthFlow,
         mainFlow: MainFlow
-    },
-    {
-        navigationOptions: {
-            header: null
-        }
     });
 
 export const AppNavigation = createAppContainer(AppNavigator);

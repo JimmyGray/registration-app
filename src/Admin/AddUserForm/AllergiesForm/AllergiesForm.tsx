@@ -2,6 +2,7 @@ import * as React from 'react';
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
 import { User } from '../../../Entity/User';
+import { Screens } from '../../../Screens';
 import { green, keyboardAvoidingView } from '../../../theme/theme';
 
 export interface IAllergiesFormProps {
