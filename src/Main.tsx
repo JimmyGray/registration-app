@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Icon, normalize } from 'react-native-elements';
+import { Icon, normalize, Text } from 'react-native-elements';
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
 import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
@@ -11,6 +11,7 @@ import { firebaseApp } from './App';
 import Loading from './Auth/Loading';
 import LoginAuth from './Auth/LoginAuth';
 import SignUp from './Auth/SignUp';
+import { IIcon } from './Common/List/ListHeader';
 import RegisterConnected from './Registration/Register/RegisterConnected';
 import RegisterListConnected from './Registration/RegisterListConnected';
 import SearchUsersConnected from './Registration/SearchModal/SearchUsersConnected';
@@ -18,11 +19,30 @@ import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
 import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
 import ReportsConnected from './Reports/ReportsConnected';
 import { Screens } from './Screens';
-import { blue, fontSize, grey, spacing, white } from './theme/theme';
+import { blue, getStatusBarHeight, spacing, white } from './theme/theme';
 
 export interface IAppProps {
     navigation: any;
 }
+
+export interface IMainMenuButtonProps {
+    title: string;
+    subtitle: string;
+    icon: IIcon;
+    backgroundColor: any;
+    onPress: any;
+}
+
+export const MainMenuButton = (props: IMainMenuButtonProps) => (
+  <View style={{ ...styles.mainMenuButtonContainer, backgroundColor: props.backgroundColor }}
+        onTouchStart={props.onPress}>
+      <Icon name={props.icon.name} type={props.icon.type} size={40} iconStyle={{ color: white, padding: 0, margin: 0 }}/>
+      <View style={styles.mainMenuButtonTextContainer}>
+          <Text h4={true} style={{ color: white }}>{props.title}</Text>
+          <Text style={{ color: white }}>{props.subtitle}</Text>
+      </View>
+  </View>
+);
 
 class Main extends React.Component<IAppProps> {
 
@@ -33,41 +53,34 @@ class Main extends React.Component<IAppProps> {
     public render() {
         return (
             <View style={styles.container}>
-                <Button
-                    icon={{ name: 'event', type: 'simple-line-icon', size: 30 }}
+                <MainMenuButton
+                    title={'Guest Book'}
+                    subtitle={'Create registers'}
+                    icon={{ name: 'event', type: 'simple-line-icon' }}
                     backgroundColor={blue.blue200}
-                    title='Guest Book'
                     onPress={() => this.props.navigation.navigate(Screens.REGISTER_LIST)}
-                    buttonStyle={styles.button}
-                    containerViewStyle={styles.buttonContainer}
-                    fontSize={fontSize.large}
                 />
-                <Button
-                    icon={{ name: 'notebook', type: 'simple-line-icon', size: 30 }}
-                    title='Reports'
+                <MainMenuButton
+                    title={'Reports'}
+                    subtitle={'View generated reports'}
+                    icon={{ name: 'notebook', type: 'simple-line-icon' }}
                     backgroundColor={blue.blue400}
                     onPress={() => this.props.navigation.navigate(Screens.REPORTS)}
-                    buttonStyle={styles.button}
-                    containerViewStyle={styles.buttonContainer}
-                    fontSize={fontSize.large}
                 />
-                <Button
-                    icon={{ name: 'logout', type: 'simple-line-icon', size: 30 }}
-                    title='Logout'
-                    containerViewStyle={styles.buttonContainer}
+                <MainMenuButton
+                    title={'Users'}
+                    subtitle={'View generated reports'}
+                    icon={{ name: 'person' }}
                     backgroundColor={blue.blue600}
-                    onPress={this.handleLogout}
-                    buttonStyle={styles.button}
-                    fontSize={fontSize.large}
+                    onPress={() => this.props.navigation.navigate(Screens.ADMIN)}
                 />
-                <Icon
-                    raised={true}
-                    name='person'
-                    reverse={true}
-                    color={grey.grey500}
-                    containerStyle={styles.icon}
-                    size={32}
-                    onPress={() => this.props.navigation.navigate(Screens.ADMIN)}/>
+                <MainMenuButton
+                    title={'Logout'}
+                    subtitle={'Logout'}
+                    icon={{ name: 'person' }}
+                    backgroundColor={blue.blue800}
+                    onPress={this.handleLogout}
+                />
             </View>
         );
     }
@@ -81,21 +94,33 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: white,
         flex: 1,
-        justifyContent: 'center',
-        width: '100%'
+        justifyContent: 'flex-start',
+        width: '100%',
+        marginTop: getStatusBarHeight()
     },
     button: {
-        height: normalize(80)
+        height: normalize(134),
+        display: 'flex',
+        justifyContent: 'center',
     },
     buttonContainer: {
-        width: '100%',
         marginLeft: 0,
-        marginRight: 0
+        marginRight: 0,
+        justifyContent: 'center'
     },
-    icon: {
-        position: 'absolute',
-        right: spacing.xSmall,
-        bottom: spacing.xSmall
+    mainMenuButtonContainer: {
+        height: normalize(134),
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    mainMenuButtonTextContainer: {
+        marginTop: normalize(spacing.xxSmall),
+        marginLeft: normalize(spacing.xxSmall),
+    },
+    textStyle: {
+        // flex: 1
     }
 });
 
