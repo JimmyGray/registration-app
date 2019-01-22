@@ -25,7 +25,7 @@ export class App extends React.Component {
     public render() {
         return (
             <Provider store={store}>
-                <AppNavigation />
+                <AppNavigation/>
             </Provider>
         );
     }

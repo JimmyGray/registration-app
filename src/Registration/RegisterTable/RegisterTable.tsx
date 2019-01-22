@@ -3,7 +3,7 @@ import * as React from 'react';
 import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { grey, keyboardAvoidingView, red } from '../../theme/theme';
+import { grey, keyboardAVWithHeader, red } from '../../theme/theme';
 import { timeFormatter } from '../../util/formatter';
 import { IRegisterEntry, ISignOutUserAction } from '../Register/RegisterOperations';
 import { IRegister } from '../RegisterListOperations';
@@ -47,7 +47,7 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                     <KeyboardAvoidingView
                         style={styles.container}
                         behavior='padding'
-                        keyboardVerticalOffset={keyboardAvoidingView}>
+                        keyboardVerticalOffset={keyboardAVWithHeader}>
                         <View>
                             <Button
                                 title='Delete'

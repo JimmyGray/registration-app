@@ -6,7 +6,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import SwipeList from '../../Common/SwipeList/SwipeList';
 import { User } from '../../Entity/User';
 import { Screens } from '../../Screens';
-import { green, grey, keyboardAvoidingView, red } from '../../theme/theme';
+import { green, grey, keyboardAVWithHeader, red } from '../../theme/theme';
 import { uuid } from '../../util/uuid';
 import { IRegisterEntry } from '../Register/RegisterOperations';
 import { IRegister } from '../RegisterListOperations';
@@ -38,7 +38,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
         return (
             <KeyboardAvoidingView style={styles.container}
                                   behavior='padding'
-                                  keyboardVerticalOffset={keyboardAvoidingView}>
+                                  keyboardVerticalOffset={keyboardAVWithHeader}>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
                     onConfirm={this.handleDatePicked}

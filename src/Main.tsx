@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, Icon } from 'react-native-elements';
+import { Button, Icon, normalize } from 'react-native-elements';
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
 import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
@@ -18,7 +18,7 @@ import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
 import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
 import ReportsConnected from './Reports/ReportsConnected';
 import { Screens } from './Screens';
-import { blue, grey, red, teal, white } from './theme/theme';
+import { blue, fontSize, grey, spacing, white } from './theme/theme';
 
 export interface IAppProps {
     navigation: any;
@@ -34,24 +34,31 @@ class Main extends React.Component<IAppProps> {
         return (
             <View style={styles.container}>
                 <Button
-                    icon={{ name: 'event', type: 'simple-line-icon' }}
-                    backgroundColor={blue.blue600}
+                    icon={{ name: 'event', type: 'simple-line-icon', size: 30 }}
+                    backgroundColor={blue.blue200}
                     title='Guest Book'
                     onPress={() => this.props.navigation.navigate(Screens.REGISTER_LIST)}
-                    style={styles.button}
+                    buttonStyle={styles.button}
+                    containerViewStyle={styles.buttonContainer}
+                    fontSize={fontSize.large}
                 />
                 <Button
-                    icon={{ name: 'notebook', type: 'simple-line-icon' }}
+                    icon={{ name: 'notebook', type: 'simple-line-icon', size: 30 }}
                     title='Reports'
-                    backgroundColor={teal.teal600}
+                    backgroundColor={blue.blue400}
                     onPress={() => this.props.navigation.navigate(Screens.REPORTS)}
                     buttonStyle={styles.button}
+                    containerViewStyle={styles.buttonContainer}
+                    fontSize={fontSize.large}
                 />
                 <Button
+                    icon={{ name: 'logout', type: 'simple-line-icon', size: 30 }}
                     title='Logout'
-                    backgroundColor={red.red700}
+                    containerViewStyle={styles.buttonContainer}
+                    backgroundColor={blue.blue600}
                     onPress={this.handleLogout}
                     buttonStyle={styles.button}
+                    fontSize={fontSize.large}
                 />
                 <Icon
                     raised={true}
@@ -59,6 +66,7 @@ class Main extends React.Component<IAppProps> {
                     reverse={true}
                     color={grey.grey500}
                     containerStyle={styles.icon}
+                    size={32}
                     onPress={() => this.props.navigation.navigate(Screens.ADMIN)}/>
             </View>
         );
@@ -73,18 +81,21 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: white,
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: '100%'
     },
     button: {
-        marginTop: 10,
-        marginBottom: 10,
-        flex: 1,
-        height: '100%'
+        height: normalize(80)
+    },
+    buttonContainer: {
+        width: '100%',
+        marginLeft: 0,
+        marginRight: 0
     },
     icon: {
         position: 'absolute',
-        right: 10,
-        bottom: 10
+        right: spacing.xSmall,
+        bottom: spacing.xSmall
     }
 });
 
@@ -110,8 +121,8 @@ const MainFlow = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-        authFlow: AuthFlow,
-        mainFlow: MainFlow
-    });
+    authFlow: AuthFlow,
+    mainFlow: MainFlow
+});
 
 export const AppNavigation = createAppContainer(AppNavigator);

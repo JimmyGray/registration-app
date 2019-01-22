@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, FormInput, FormLabel, FormValidationMessage, normalize, Text } from 'react-native-elements';
 import { firebaseApp } from '../App';
 import { Screens } from '../Screens';
-import { blue, green, grey, keyboardAvoidingView } from '../theme/theme';
+import { blue, green, grey, keyboardAV, spacing } from '../theme/theme';
 
 export interface ILoginAuthProps {
     navigation: any;
@@ -30,7 +30,7 @@ export default class Login extends React.Component<ILoginAuthProps, ILoginAuthSt
     public render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior='padding'
-                                  keyboardVerticalOffset={keyboardAvoidingView}>
+                                  keyboardVerticalOffset={keyboardAV}>
                 <View style={styles.formContainer}>
                     <Text h4={true}>Login</Text>
                     <FormLabel>Email</FormLabel>
@@ -43,7 +43,7 @@ export default class Login extends React.Component<ILoginAuthProps, ILoginAuthSt
                     />
                     <FormLabel>Password</FormLabel>
                     <FormInput
-                        secureTextEntry
+                        secureTextEntry={true}
                         style={styles.textInput}
                         autoCapitalize="none"
                         placeholder="Password"
@@ -53,22 +53,21 @@ export default class Login extends React.Component<ILoginAuthProps, ILoginAuthSt
                     {this.state.errorMessage &&
                     <FormValidationMessage>{this.state.errorMessage}</FormValidationMessage>}
                 </View>
-                <View>
+                <View style={styles.loginButton}>
                     <Button
                         title='Login'
                         onPress={this.handleLogin}
-                        containerViewStyle={styles.button}
                         disabled={this.isDisabled}
                         backgroundColor={green.green700}
-                        disabledStyle={{ backgroundColor: grey.grey700}}
+                        buttonStyle={styles.button}
                     />
                 </View>
                 <View>
                     <Button
                         title="Don't have an account? Sign Up"
-                        style={styles.button}
                         onPress={() => this.props.navigation.navigate(Screens.SIGN_UP)}
                         backgroundColor={blue.blue700}
+                        buttonStyle={styles.button}
                     />
                 </View>
             </KeyboardAvoidingView>
@@ -93,11 +92,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
-        marginBottom: normalize(10)
-    },
-    button: {
-        marginTop: normalize(4),
-        marginBottom: normalize(4)
+        marginBottom: spacing.xSmall
     },
     formContainer: {
         flex: 1,
@@ -105,10 +100,16 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textInput: {
-        height: 40,
+        height: normalize(40),
         width: '90%',
         borderColor: 'gray',
         borderWidth: 1,
-        marginTop: 8
+        marginTop: spacing.xSmall
+    },
+    loginButton: {
+        marginBottom: spacing.xSmall
+    },
+    button: {
+        height: normalize(50)
     }
 });

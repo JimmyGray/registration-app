@@ -1,4 +1,4 @@
-import { normalize } from "react-native-elements";
+import { normalize } from 'react-native-elements';
 import { Header } from "react-navigation";
 
 export const fontSize = {
@@ -12,6 +12,7 @@ export const fontSize = {
 };
 
 export const spacing = {
+    xxSmall: normalize(5),
     xSmall: normalize(10),
     small: normalize(12),
     medium: normalize(16),
@@ -19,7 +20,8 @@ export const spacing = {
     xLarge: normalize(24)
 };
 
-export const keyboardAvoidingView = normalize(Header.HEIGHT + 10);
+export const keyboardAVWithHeader = normalize(Header.HEIGHT);
+export const keyboardAV = normalize(10);
 
 // https://refactoringui.com/previews/building-your-color-palette/
 

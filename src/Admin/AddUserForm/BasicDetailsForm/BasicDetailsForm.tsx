@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, FormInput, FormLabel } from 'react-native-elements';
 import { User } from '../../../Entity/User';
 import { Screens } from '../../../Screens';
-import { green, keyboardAvoidingView } from '../../../theme/theme';
+import { green, keyboardAVWithHeader } from '../../../theme/theme';
 
 export interface IAddUserFormProps {
     navigation: any;
@@ -29,7 +29,7 @@ export default class BasicDetailsForm extends React.Component<IAddUserFormProps,
     public render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior='padding'
-                                  keyboardVerticalOffset={keyboardAvoidingView}>
+                                  keyboardVerticalOffset={keyboardAVWithHeader}>
                 <View>
                     <FormLabel>First Name</FormLabel>
                     <FormInput value={this.state.user.firstName} onChangeText={(value) => this.handleOnChange(value, 'firstName')}/>
