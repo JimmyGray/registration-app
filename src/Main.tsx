@@ -19,7 +19,7 @@ import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
 import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
 import ReportsConnected from './Reports/ReportsConnected';
 import { Screens } from './Screens';
-import { blue, getStatusBarHeight, spacing, white } from './theme/theme';
+import { blue, getStatusBarHeight, white } from './theme/theme';
 
 export interface IAppProps {
     navigation: any;
@@ -36,10 +36,11 @@ export interface IMainMenuButtonProps {
 export const MainMenuButton = (props: IMainMenuButtonProps) => (
   <View style={{ ...styles.mainMenuButtonContainer, backgroundColor: props.backgroundColor }}
         onTouchStart={props.onPress}>
-      <Icon name={props.icon.name} type={props.icon.type} size={40} iconStyle={{ color: white, padding: 0, margin: 0 }}/>
+      <Icon name={props.icon.name} type={props.icon.type} size={normalize(40)}
+            iconStyle={styles.icon}/>
       <View style={styles.mainMenuButtonTextContainer}>
-          <Text h4={true} style={{ color: white }}>{props.title}</Text>
-          <Text style={{ color: white }}>{props.subtitle}</Text>
+          <Text h4={true} style={styles.text}>{props.title}</Text>
+          <Text style={styles.text}>{props.subtitle}</Text>
       </View>
   </View>
 );
@@ -55,7 +56,7 @@ class Main extends React.Component<IAppProps> {
             <View style={styles.container}>
                 <MainMenuButton
                     title={'Guest Book'}
-                    subtitle={'Create registers'}
+                    subtitle={'Create guest books and sign in users'}
                     icon={{ name: 'event', type: 'simple-line-icon' }}
                     backgroundColor={blue.blue200}
                     onPress={() => this.props.navigation.navigate(Screens.REGISTER_LIST)}
@@ -69,15 +70,15 @@ class Main extends React.Component<IAppProps> {
                 />
                 <MainMenuButton
                     title={'Users'}
-                    subtitle={'View generated reports'}
+                    subtitle={'Create and edit users'}
                     icon={{ name: 'person' }}
                     backgroundColor={blue.blue600}
                     onPress={() => this.props.navigation.navigate(Screens.ADMIN)}
                 />
                 <MainMenuButton
                     title={'Logout'}
-                    subtitle={'Logout'}
-                    icon={{ name: 'person' }}
+                    subtitle={''}
+                    icon={{ name: 'logout', type: 'simple-line-icon' }}
                     backgroundColor={blue.blue800}
                     onPress={this.handleLogout}
                 />
@@ -112,15 +113,20 @@ const styles = StyleSheet.create({
         height: normalize(134),
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     mainMenuButtonTextContainer: {
-        marginTop: normalize(spacing.xxSmall),
-        marginLeft: normalize(spacing.xxSmall),
+        flex: 1
     },
-    textStyle: {
-        // flex: 1
+    icon: {
+        color: white,
+        marginRight:normalize(20),
+        marginLeft: normalize(40)
+    },
+    text: {
+        color: white,
+        textAlign: 'left'
     }
 });
 

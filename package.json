@@ -26,6 +26,7 @@
     "react-native-table-component": "^1.2.0",
     "react-navigation": "3.0.9",
     "react-redux": "6.0.0",
+    "react-redux-firebase": "^2.2.6",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "redux-persist": "^5.10.0"
