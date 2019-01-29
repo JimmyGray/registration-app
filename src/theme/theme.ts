@@ -21,7 +21,7 @@ export const spacing = {
     xLarge: normalize(24)
 };
 
-export const keyboardAVWithHeader = normalize(Header.HEIGHT);
+export const keyboardAVWithHeader = normalize(Header.HEIGHT + 10);
 export const keyboardAV = normalize(10);
 
 // https://refactoringui.com/previews/building-your-color-palette/
@@ -385,7 +385,7 @@ const { height: W_HEIGHT, width: W_WIDTH } = Dimensions.get('window');
 
 let isIPhoneX = false;
 
-if (Platform.OS === 'ios' && !PlatformIOS.isPad && !PlatformIOS.isTVOS) {
+if (Platform.OS === 'ios' && PlatformIOS && !PlatformIOS.isPad && !PlatformIOS.isTVOS) {
     isIPhoneX = W_WIDTH === X_WIDTH && W_HEIGHT === X_HEIGHT || W_WIDTH === XSMAX_WIDTH && W_HEIGHT === XSMAX_HEIGHT;
 }
 

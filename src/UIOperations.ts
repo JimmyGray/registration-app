@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createAction, handleActions } from 'redux-actions';
-import { IRegister } from './Registration/RegisterListOperations';
+import { IRegister } from './components/registration/RegisterListOperations';
 
 export interface IUIState {
     register: IRegister;
@@ -12,7 +12,7 @@ export enum ACTION_TYPES {
 export const selectRegisterAction = (register: IRegister) => createAction(ACTION_TYPES.SELECT_REGISTER)(register);
 
 export const UI_DEFAULT_STATE: IUIState = {
-    register: { id: '', date: moment() }
+    register: { id: '', date: moment().valueOf() }
 };
 
 export const uiReducer = handleActions(

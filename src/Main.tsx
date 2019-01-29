@@ -2,22 +2,22 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, normalize, Text } from 'react-native-elements';
 import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import AllergiesFormConnected from './Admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
-import BasicDetailsForm from './Admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
-import EmergencyContactForm from './Admin/AddUserForm/EmergencyContactForm/EmergencyContactForm';
-import AdminConnected from './Admin/AdminConnected';
-import UserProfile from './Admin/UserProfile';
-import { firebaseApp } from './App';
-import Loading from './Auth/Loading';
-import LoginAuth from './Auth/LoginAuth';
-import SignUp from './Auth/SignUp';
-import { IIcon } from './Common/List/ListHeader';
-import RegisterConnected from './Registration/Register/RegisterConnected';
-import RegisterListConnected from './Registration/RegisterListConnected';
-import SearchUsersConnected from './Registration/SearchModal/SearchUsersConnected';
-import AllergiesConnected from './Reports/Allergies/AllergiesConnected';
-import AttendancesConnected from './Reports/Attendances/AttendancesConnected';
-import ReportsConnected from './Reports/ReportsConnected';
+import AllergiesFormConnected from './components/admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
+import BasicDetailsForm from './components/admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
+import EmergencyContactForm from './components/admin/AddUserForm/EmergencyContactForm/EmergencyContactForm';
+import AdminConnected from './components/admin/AdminConnected';
+import UserProfile from './components/admin/UserProfile';
+import Loading from './components/auth/Loading';
+import LoginAuth from './components/auth/LoginAuth';
+import SignUp from './components/auth/SignUp';
+import { IIcon } from './components/common/List/ListHeader';
+import RegisterConnected from './components/registration/Register/RegisterConnected';
+import RegisterListConnected from './components/registration/RegisterListConnected';
+import SearchUsersConnected from './components/registration/SearchModal/SearchUsersConnected';
+import AllergiesConnected from './components/reports/Allergies/AllergiesConnected';
+import AttendancesConnected from './components/reports/Attendances/AttendancesConnected';
+import ReportsConnected from './components/reports/ReportsConnected';
+import Settings from './components/settings/Settings';
 import { Screens } from './Screens';
 import { blue, getStatusBarHeight, spacing, white } from './theme/theme';
 
@@ -36,7 +36,11 @@ export interface IMainMenuButtonProps {
 export const MainMenuButton = (props: IMainMenuButtonProps) => (
   <View style={{ ...styles.mainMenuButtonContainer, backgroundColor: props.backgroundColor }}
         onTouchStart={props.onPress}>
-      <Icon name={props.icon.name} type={props.icon.type} size={40} iconStyle={{ color: white, padding: 0, margin: 0 }}/>
+      <Icon name={props.icon.name}
+            type={props.icon.type}
+            size={40}
+            iconStyle={{ color: white, padding: 0, margin: 0 }}
+      />
       <View style={styles.mainMenuButtonTextContainer}>
           <Text h4={true} style={{ color: white }}>{props.title}</Text>
           <Text style={{ color: white }}>{props.subtitle}</Text>
@@ -55,39 +59,35 @@ class Main extends React.Component<IAppProps> {
             <View style={styles.container}>
                 <MainMenuButton
                     title={'Guest Book'}
-                    subtitle={'Create registers'}
+                    subtitle={'Create Registers'}
                     icon={{ name: 'event', type: 'simple-line-icon' }}
                     backgroundColor={blue.blue200}
                     onPress={() => this.props.navigation.navigate(Screens.REGISTER_LIST)}
                 />
                 <MainMenuButton
                     title={'Reports'}
-                    subtitle={'View generated reports'}
+                    subtitle={'View Generated Reports'}
                     icon={{ name: 'notebook', type: 'simple-line-icon' }}
                     backgroundColor={blue.blue400}
                     onPress={() => this.props.navigation.navigate(Screens.REPORTS)}
                 />
                 <MainMenuButton
-                    title={'Users'}
-                    subtitle={'View generated reports'}
+                    title={'Members'}
+                    subtitle={'View and Edit Members'}
                     icon={{ name: 'person' }}
                     backgroundColor={blue.blue600}
                     onPress={() => this.props.navigation.navigate(Screens.ADMIN)}
                 />
                 <MainMenuButton
-                    title={'Logout'}
-                    subtitle={'Logout'}
+                    title={'Settings'}
+                    subtitle={'Change Application Settings'}
                     icon={{ name: 'person' }}
                     backgroundColor={blue.blue800}
-                    onPress={this.handleLogout}
+                    onPress={() => this.props.navigation.navigate(Screens.SETTINGS)}
                 />
             </View>
         );
     }
-
-    private handleLogout = async () => {
-        await firebaseApp.auth().signOut();
-    };
 }
 
 const styles = StyleSheet.create({
@@ -95,11 +95,9 @@ const styles = StyleSheet.create({
         backgroundColor: white,
         flex: 1,
         justifyContent: 'flex-start',
-        width: '100%',
         marginTop: getStatusBarHeight()
     },
     button: {
-        height: normalize(134),
         display: 'flex',
         justifyContent: 'center',
     },
@@ -109,18 +107,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     mainMenuButtonContainer: {
-        height: normalize(134),
+        height: '25%',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingLeft: '10%'
     },
     mainMenuButtonTextContainer: {
         marginTop: normalize(spacing.xxSmall),
         marginLeft: normalize(spacing.xxSmall),
-    },
-    textStyle: {
-        // flex: 1
     }
 });
 
@@ -142,7 +138,8 @@ const MainFlow = createStackNavigator({
     [Screens.ADD_USER_ALLERGIES]: AllergiesFormConnected,
     [Screens.SEARCH_USER]: SearchUsersConnected,
     [Screens.ALLERGIES]: AllergiesConnected,
-    [Screens.ATTENDANCES]: AttendancesConnected
+    [Screens.ATTENDANCES]: AttendancesConnected,
+    [Screens.SETTINGS]: Settings,
 });
 
 const AppNavigator = createSwitchNavigator({
