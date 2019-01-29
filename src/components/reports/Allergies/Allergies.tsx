@@ -1,9 +1,10 @@
-import { capitalize, mergeWith } from 'lodash';
+import { mergeWith } from 'lodash';
 import React from 'react';
-import { ScrollView } from 'react-native';
-import { Card, Text } from 'react-native-elements';
-import { Allergy } from '../../admin/AddUserForm/AllergiesForm/AllergiesForm';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { normalize, Text } from 'react-native-elements';
 import { User } from '../../../entity/User';
+import { blue, spacing, white } from '../../../theme/theme';
+import { Allergy } from '../../admin/AddUserForm/AllergiesForm/AllergiesForm';
 
 export interface IAllergiesProps {
     users: User[];
@@ -13,6 +14,38 @@ export interface IAllergiesProps {
 export interface IAllergiesState {
     allergies: Map<Allergy, User[]>;
 }
+
+export interface IAllergyCardProps {
+    title: string;
+    body: JSX.Element;
+}
+
+export const AllergyCard = (props: IAllergyCardProps) => (
+    <View style={styles.container}>
+        <View style={styles.header}>
+            <Text>{props.title}</Text>
+        </View>
+        <View style={styles.body}>
+            {props.body}
+        </View>
+    </View>
+);
+
+const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        margin: spacing.small,
+    },
+    header: {
+        backgroundColor: blue.bluea400,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        height: normalize(40),
+        color: white
+    },
+    body: {
+    }
+});
 
 export default class Allergies extends React.Component<IAllergiesProps, IAllergiesState> {
 
@@ -49,9 +82,7 @@ export default class Allergies extends React.Component<IAllergiesProps, IAllergi
                 {Array.from(Object.keys(this.getAllergies())).map((allergy: string) => {
                     const users: User[] = this.getAllergies()[allergy] || [];
                     return (
-                      <Card title={capitalize(allergy)} key={allergy}>
-                          {users.map(user => <Text key={user.id}>{user.fullName}</Text>)}
-                      </Card>
+                        <AllergyCard title={allergy} body={users.map(user => <Text key={user.id}>{user.fullName}</Text>)}/>
                     );
                 })}
             </ScrollView>
