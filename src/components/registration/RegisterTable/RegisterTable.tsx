@@ -1,11 +1,12 @@
 import moment from 'moment';
 import * as React from 'react';
-import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import Swipeout from 'react-native-swipeout';
 import { ISettings } from '../../../store/createStore';
-import { grey, keyboardAVWithHeader, red } from '../../../theme/theme';
+import { grey, red, white } from '../../../theme/theme';
 import { timeFormatter } from '../../../util/formatter';
+import { ISwipeButton } from '../../common/SwipeList/SwipeList';
 import { IRegisterEntry, ISignOutUserAction } from '../Register/RegisterOperations';
 import { IRegister } from '../RegisterListOperations';
 import { Row, RowType, TextColumn } from './Row';
@@ -19,7 +20,6 @@ export interface IRegisterTableProps {
 }
 
 export interface IRegisterTableState {
-    overlay: boolean;
     selectedId: string;
     isDateTimePickerVisible: boolean;
 }
@@ -29,7 +29,6 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
     constructor(props: IRegisterTableProps) {
         super(props);
         this.state = {
-            overlay: false,
             isDateTimePickerVisible: false,
             selectedId: ''
         };
@@ -45,28 +44,6 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                     minimumDate={this.getMinimumDate}
                     mode='time'
                 />
-                <Modal visible={this.state.overlay} onRequestClose={() => console.log('Modal Closed')}>
-                    <KeyboardAvoidingView
-                        style={styles.container}
-                        behavior='padding'
-                        keyboardVerticalOffset={keyboardAVWithHeader}>
-                        <View>
-                            <Button
-                                title='Delete'
-                                icon={{ name: 'trash', type: 'evilicon' }}
-                                backgroundColor={red.reda200}
-                                onPress={this.handleOnDelete}
-                            />
-                        </View>
-                        <View>
-                            <Button
-                                title='Close'
-                                backgroundColor={grey.grey600}
-                                onPress={this.handleOnClose}
-                            />
-                        </View>
-                    </KeyboardAvoidingView>
-                </Modal>
                 <View style={styles.rowContainer}>
                     <TextColumn value='Name' textStyle={styles.columnHeader}/>
                     <TextColumn value='In' textStyle={styles.columnHeader}/>
@@ -74,25 +51,55 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                 </View>
                 <ScrollView>
                 {this.props.registerEntries
-                    .map((registerEntry: IRegisterEntry) =>
-                        <Row
-                            key={registerEntry.id}
-                            onLongPress={this.onLongPress.bind(this, registerEntry.id)}
-                            items={[
-                                {
-                                    type: RowType.TEXT,
-                                    value: registerEntry.fullName
-                                },
-                                {
-                                    type: RowType.TEXT,
-                                    value: timeFormatter(registerEntry.entry)
-                                },
-                                this.getExitItem(registerEntry)
-                            ]}
-                        />)}
+                    .map((registerEntry: IRegisterEntry) => this.getSwipeRow(registerEntry))}
                 </ScrollView>
             </View>
         );
+    }
+
+    private getSwipeRow(registerEntry: IRegisterEntry) {
+        return (
+            <Swipeout right={this.getSwipeButtonProps(registerEntry)}
+                      key={registerEntry.id}
+                      autoClose={true}
+                      style={styles.swipeout}
+                      backgroundColor={white}>
+                <TouchableOpacity>
+                    <Row
+                        key={registerEntry.id}
+                        items={[
+                            {
+                                type: RowType.TEXT,
+                                value: registerEntry.fullName
+                            },
+                            {
+                                type: RowType.TEXT,
+                                value: timeFormatter(registerEntry.entry)
+                            },
+                            this.getExitItem(registerEntry)
+                        ]}
+                    />
+                </TouchableOpacity>
+            </Swipeout>
+        );
+    }
+
+    private getSwipeButtonProps(swipeItem: IRegisterEntry) {
+        const swipeButtons: ISwipeButton[] = this.getSwipeButtons || [];
+        return swipeButtons.map((button: ISwipeButton) => ({
+            ...button,
+            onPress: button.onPress.bind(this, swipeItem.id)
+        }));
+    }
+
+    private get getSwipeButtons() {
+        return [
+            {
+                text: 'Delete',
+                backgroundColor: red.red700,
+                onPress: (id) => this.props.onDeleteEntry(id)
+            },
+        ]
     }
 
     private getExitItem(entry: IRegisterEntry) {
@@ -115,28 +122,6 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
         this.setState({
             selectedId
         }, () => this.handleDatePicked(new Date()));
-    }
-
-    private onLongPress = (selectedId: string) => {
-        this.setState({
-            overlay: !this.state.overlay,
-            selectedId
-        });
-    };
-
-    private handleOnDelete = () => {
-        this.props.onDeleteEntry(this.state.selectedId!);
-        this.setState({
-            overlay: false,
-            selectedId: ''
-        });
-    };
-
-    private handleOnClose = () => {
-        this.setState({
-            overlay: false,
-            selectedId: ''
-        });
     };
 
     private get getMinimumDate(): Date | undefined {
@@ -192,5 +177,9 @@ const styles = StyleSheet.create({
     columnHeader: {
         color: grey.grey400,
         fontWeight: 'bold'
+    },
+    swipeout: {
+        borderBottomWidth: 1,
+        borderBottomColor: grey.grey200,
     }
 });

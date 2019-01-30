@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-elements';
-import SwipeList from '../common/SwipeList/SwipeList';
 import { User } from '../../entity/User';
 import { Screens } from '../../Screens';
-import { blue, green, grey, red } from '../../theme/theme';
-import { IRegisterEntry } from "../registration/Register/RegisterOperations";
+import { green, grey, red } from '../../theme/theme';
+import SwipeList from '../common/SwipeList/SwipeList';
+import { IRegisterEntry } from '../registration/Register/RegisterOperations';
 
 export interface IAdminProps {
     onEditUser: (id: string) => void;
