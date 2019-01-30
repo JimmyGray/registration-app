@@ -1,6 +1,6 @@
 import { mergeWith } from 'lodash';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { normalize, Text } from 'react-native-elements';
 import { User } from '../../../entity/User';
 import { blue, spacing, white } from '../../../theme/theme';
@@ -23,6 +23,7 @@ export interface IAllergyCardProps {
 export const AllergyCard = (props: IAllergyCardProps) => (
     <View style={styles.container}>
         <View style={styles.header}>
+            <Image source={require('../../../../assets/icons/almond.png')} style={{ height: 30, width: 30 }}/>
             <Text>{props.title}</Text>
         </View>
         <View style={styles.body}>
@@ -82,7 +83,7 @@ export default class Allergies extends React.Component<IAllergiesProps, IAllergi
                 {Array.from(Object.keys(this.getAllergies())).map((allergy: string) => {
                     const users: User[] = this.getAllergies()[allergy] || [];
                     return (
-                        <AllergyCard title={allergy} body={users.map(user => <Text key={user.id}>{user.fullName}</Text>)}/>
+                        <AllergyCard title={allergy} key={allergy} body={users.map(user => <Text key={user.id}>{user.fullName}</Text>)}/>
                     );
                 })}
             </ScrollView>
