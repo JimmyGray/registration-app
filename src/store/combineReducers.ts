@@ -3,6 +3,7 @@ import { editUserReducer } from '../components/admin/AddUserForm/AddUserFormOper
 import { userReducer } from '../components/admin/AdminOperations';
 import { registerEntriesReducer } from '../components/registration/Register/RegisterOperations';
 import { registerListReducer } from '../components/registration/RegisterListOperations';
+import { settingsReducer } from '../components/settings/SettingsOperations';
 import { uiReducer } from '../UIOperations';
 
 export const rootReducer = combineReducers<any>({
@@ -10,6 +11,7 @@ export const rootReducer = combineReducers<any>({
         editUser: editUserReducer,
         registerEntries: registerEntriesReducer,
         registerList: registerListReducer,
-        ui: uiReducer
+        ui: uiReducer,
+        settings: settingsReducer
     }
 );

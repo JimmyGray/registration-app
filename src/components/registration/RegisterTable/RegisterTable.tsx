@@ -3,6 +3,7 @@ import * as React from 'react';
 import { KeyboardAvoidingView, Modal, ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { ISettings } from '../../../store/createStore';
 import { grey, keyboardAVWithHeader, red } from '../../../theme/theme';
 import { timeFormatter } from '../../../util/formatter';
 import { IRegisterEntry, ISignOutUserAction } from '../Register/RegisterOperations';
@@ -14,6 +15,7 @@ export interface IRegisterTableProps {
     registerEntries: IRegisterEntry[];
     onSignOutUser: (payload: ISignOutUserAction) => void;
     onDeleteEntry: (id: string) => void;
+    settings: ISettings;
 }
 
 export interface IRegisterTableState {
@@ -100,10 +102,12 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
                 value: timeFormatter(entry.exit)
             };
         }
+        const onPress = this.props.settings.autoSignOut ? this.handleOnQuickSignOut.bind(this, entry.id)
+            : this.showDateTimePicker.bind(this, entry.id);
         return {
             type: RowType.BUTTON,
             value: 'Sign Out',
-            onPress: this.handleOnQuickSignOut.bind(this, entry.id)
+            onPress
         };
     }
 
@@ -144,7 +148,7 @@ export default class RegisterTable extends React.Component<IRegisterTableProps, 
         return undefined;
     }
 
-    // private showDateTimePicker = (selectedId: string) => this.setState({ isDateTimePickerVisible: true, selectedId });
+    private showDateTimePicker = (selectedId: string) => this.setState({ isDateTimePickerVisible: true, selectedId });
 
     private hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false, selectedId: '' });
 

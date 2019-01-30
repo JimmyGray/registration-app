@@ -1,11 +1,11 @@
+import { capitalize } from 'lodash';
 import React from 'react';
 import { View } from 'react-native';
+import { Text } from 'react-native-elements';
 import { EmergencyContact } from '../../entity/EmergencyContact';
 import { User } from '../../entity/User';
 import { IRegisterEntry } from '../registration/Register/RegisterOperations';
-import { Text } from 'react-native-elements';
 import { Allergy } from './AddUserForm/AllergiesForm/AllergiesForm';
-import { capitalize } from 'lodash';
 
 export interface IAdminProps {
     navigation: any;

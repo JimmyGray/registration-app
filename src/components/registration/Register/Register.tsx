@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { User } from '../../../entity/User';
 import { Screens } from '../../../Screens';
+import { ISettings } from '../../../store/createStore';
 import { green } from '../../../theme/theme';
 import { dateFormatter } from '../../../util/formatter';
 import { IRegister } from '../RegisterListOperations';
@@ -16,6 +17,7 @@ export interface IRegisterProps {
     onDeleteEntry: (id: string) => void;
     users: User[];
     navigation: any;
+    settings: ISettings;
 }
 
 export interface IRegisterState {
@@ -63,6 +65,7 @@ export default class Register extends React.Component<IRegisterProps, IRegisterS
                     registerEntries={filteredEntries}
                     onSignOutUser={this.props.onSignOutUser}
                     onDeleteEntry={this.props.onDeleteEntry}
+                    settings={this.props.settings}
                 />
                 }
                 <Icon

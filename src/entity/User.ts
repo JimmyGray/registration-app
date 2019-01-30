@@ -7,7 +7,7 @@ export class User {
     public readonly id: string = uuid();
     public readonly firstName: string = '';
     public readonly surname: string = '';
-    public readonly emergencyContact: EmergencyContact = new EmergencyContact();
+    public readonly emergencyContact: EmergencyContact = new EmergencyContact({});
     public readonly allergies: Allergy[] = [];
 
     public constructor(props: Partial<User>) {
@@ -15,7 +15,7 @@ export class User {
     }
 
     public cloneWithProps(props: Partial<User>) {
-        return Object.assign(this, props);
+        return new User(Object.assign(this, props));
     }
 
     public get fullName() {

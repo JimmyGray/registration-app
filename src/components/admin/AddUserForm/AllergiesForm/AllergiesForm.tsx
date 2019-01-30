@@ -16,12 +16,11 @@ export interface IAllergiesFormState {
 }
 
 export enum Allergy {
-    NUT = 'nut',
-    RAW_EGG = 'rawEgg',
+    NUTS = 'nuts',
+    RAW_EGG = 'raw_egg',
     GLUTEN = 'gluten',
-    WHEAT = 'wheat',
-    LACTOSE = 'lactose',
     DAIRY = 'dairy',
+    FISH = 'fish'
 }
 
 export default class AllergiesForm extends React.Component<IAllergiesFormProps, IAllergiesFormState> {
@@ -45,8 +44,8 @@ export default class AllergiesForm extends React.Component<IAllergiesFormProps, 
                 <View>
                     <CheckBox
                         title='Nuts'
-                        checked={this.hasAllergy(Allergy.NUT)}
-                        onPress={this.handleOnChange.bind(this, Allergy.NUT)}
+                        checked={this.hasAllergy(Allergy.NUTS)}
+                        onPress={this.handleOnChange.bind(this, Allergy.NUTS)}
                     />
                     <CheckBox
                         title='Raw Egg'
@@ -59,19 +58,14 @@ export default class AllergiesForm extends React.Component<IAllergiesFormProps, 
                         onPress={this.handleOnChange.bind(this, Allergy.GLUTEN)}
                     />
                     <CheckBox
-                        title='Wheat'
-                        checked={this.hasAllergy(Allergy.WHEAT)}
-                        onPress={this.handleOnChange.bind(this, Allergy.WHEAT)}
-                    />
-                    <CheckBox
-                        title='Lactose'
-                        checked={this.hasAllergy(Allergy.LACTOSE)}
-                        onPress={this.handleOnChange.bind(this, Allergy.LACTOSE)}
-                    />
-                    <CheckBox
                         title='Dairy'
                         checked={this.hasAllergy(Allergy.DAIRY)}
                         onPress={this.handleOnChange.bind(this, Allergy.DAIRY)}
+                    />
+                    <CheckBox
+                        title='Fish'
+                        checked={this.hasAllergy(Allergy.FISH)}
+                        onPress={this.handleOnChange.bind(this, Allergy.FISH)}
                     />
                 </View>
                 <View>

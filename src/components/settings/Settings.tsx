@@ -1,10 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Button } from 'react-native-elements';
-import { firebaseApp } from '../../App';
-import { red } from '../../theme/theme';
+import { CheckBox, normalize } from 'react-native-elements';
+import { ISettings } from '../../store/createStore';
+import { Setting } from './SettingsOperations';
 
-export interface ISettingsProps {}
+export interface ISettingsProps {
+    settings: ISettings;
+    onSettingToggle: (setting: Setting) => void;
+}
 
 export default class Settings extends React.Component<ISettingsProps> {
 
@@ -14,13 +17,17 @@ export default class Settings extends React.Component<ISettingsProps> {
 
     public render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <Button title='Logout' onPress={this.handleLogout} backgroundColor={red.red700}/>
+            <View style={{ flex: 1, justifyContent: 'space-between', marginBottom: normalize(10) }}>
+                <CheckBox
+                    title='Auto Sign out user (uses current time)'
+                    checked={this.props.settings.autoSignOut}
+                    onPress={this.handleOnToggle.bind(this, Setting.AUTO_SIGN_OUT)}
+                />
             </View>
         );
     }
 
-    private handleLogout = async () => {
-        await firebaseApp.auth().signOut();
+    private handleOnToggle = (setting: Setting) => {
+        this.props.onSettingToggle(setting);
     };
 }

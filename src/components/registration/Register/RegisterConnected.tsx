@@ -8,7 +8,8 @@ const mapStateToProps = (state: IAppState, ownProps: any) => ({
     users: state.users,
     navigation: ownProps.navigation,
     registerEntries: state.registerEntries,
-    register: state.ui.register
+    register: state.ui.register,
+    settings: state.settings
 });
 
 const mapDispatchToProps = (dispatch: any) => bindActionCreators({

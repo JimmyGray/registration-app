@@ -1,15 +1,13 @@
+import { Asset } from 'expo';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, normalize, Text } from 'react-native-elements';
-import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { createAppContainer, createStackNavigator } from 'react-navigation';
 import AllergiesFormConnected from './components/admin/AddUserForm/AllergiesForm/AllergiesFormConnected';
 import BasicDetailsForm from './components/admin/AddUserForm/BasicDetailsForm/BasicDetailsForm';
 import EmergencyContactForm from './components/admin/AddUserForm/EmergencyContactForm/EmergencyContactForm';
 import AdminConnected from './components/admin/AdminConnected';
 import UserProfile from './components/admin/UserProfile';
-import Loading from './components/auth/Loading';
-import LoginAuth from './components/auth/LoginAuth';
-import SignUp from './components/auth/SignUp';
 import { IIcon } from './components/common/List/ListHeader';
 import RegisterConnected from './components/registration/Register/RegisterConnected';
 import RegisterListConnected from './components/registration/RegisterListConnected';
@@ -17,7 +15,7 @@ import SearchUsersConnected from './components/registration/SearchModal/SearchUs
 import AllergiesConnected from './components/reports/Allergies/AllergiesConnected';
 import AttendancesConnected from './components/reports/Attendances/AttendancesConnected';
 import ReportsConnected from './components/reports/ReportsConnected';
-import Settings from './components/settings/Settings';
+import SettingsConnected from './components/settings/SettingsConnected';
 import { Screens } from './Screens';
 import { blue, getStatusBarHeight, spacing, white } from './theme/theme';
 
@@ -54,6 +52,16 @@ class Main extends React.Component<IAppProps> {
         header: null
     };
 
+    public async componentWillMount() {
+        await Asset.loadAsync([
+            require('../assets/icons/milk.png'),
+            require('../assets/icons/almond.png'),
+            require('../assets/icons/gluten.png'),
+            require('../assets/icons/egg.png'),
+            require('../assets/icons/fish.png'),
+        ]);
+    }
+
     public render() {
         return (
             <View style={styles.container}>
@@ -81,7 +89,7 @@ class Main extends React.Component<IAppProps> {
                 <MainMenuButton
                     title={'Settings'}
                     subtitle={'Change Application Settings'}
-                    icon={{ name: 'person' }}
+                    icon={{ name: 'settings' }}
                     backgroundColor={blue.blue800}
                     onPress={() => this.props.navigation.navigate(Screens.SETTINGS)}
                 />
@@ -120,12 +128,6 @@ const styles = StyleSheet.create({
     }
 });
 
-const AuthFlow = createSwitchNavigator({
-    [Screens.LOADING]: Loading,
-    [Screens.SIGN_UP]: SignUp,
-    [Screens.LOGIN]: LoginAuth
-});
-
 const MainFlow = createStackNavigator({
     [Screens.MAIN]: Main,
     [Screens.REPORTS]: ReportsConnected,
@@ -139,12 +141,7 @@ const MainFlow = createStackNavigator({
     [Screens.SEARCH_USER]: SearchUsersConnected,
     [Screens.ALLERGIES]: AllergiesConnected,
     [Screens.ATTENDANCES]: AttendancesConnected,
-    [Screens.SETTINGS]: Settings,
+    [Screens.SETTINGS]: SettingsConnected,
 });
 
-const AppNavigator = createSwitchNavigator({
-    authFlow: AuthFlow,
-    mainFlow: MainFlow
-});
-
-export const AppNavigation = createAppContainer(AppNavigator);
+export const AppNavigation = createAppContainer(MainFlow);
