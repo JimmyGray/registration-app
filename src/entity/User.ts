@@ -1,3 +1,4 @@
+import { startCase } from 'lodash';
 import { Allergy } from '../components/admin/AddUserForm/AllergiesForm/AllergiesForm';
 import { uuid } from '../util/uuid';
 import { EmergencyContact } from './EmergencyContact';
@@ -20,6 +21,12 @@ export class User {
 
     public get fullName() {
         return `${this.firstName} ${this.surname}`
+    }
+
+    public get allergiesToString() {
+        return this.allergies
+            .map(x => startCase(x.replace('_', ' ')))
+            .join(', ')
     }
 
     public isValid() {

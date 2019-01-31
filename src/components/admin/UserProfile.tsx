@@ -29,7 +29,7 @@ export default class UserProfile extends React.Component<IAdminProps> {
                 <Text h4={true}>{user.fullName}</Text>
                 {this.getEmergencyContactName(user.emergencyContact)}
                 {this.getEmergencyContactNumber(user.emergencyContact)}
-                {this.getAllergies(user.allergies)}
+                {this.getAllergies(user)}
                 <Text>Attendances: {attendances}</Text>
             </View>
         );
@@ -49,10 +49,9 @@ export default class UserProfile extends React.Component<IAdminProps> {
         return null;
     }
 
-    private getAllergies(allergies: Allergy[]) {
-        const allergiesFormatted: string[] = allergies.map(x => capitalize(x));
-        if (allergiesFormatted.length) {
-            return <Text>Allergies: {allergiesFormatted.join(', ')}</Text>;
+    private getAllergies(user: User) {
+        if (user.allergies.length >= 1) {
+            return <Text>Allergies: {user.allergiesToString}</Text>;
         }
         return null;
     }
