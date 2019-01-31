@@ -1,6 +1,7 @@
 import { createStore } from 'redux';
 import { createTransform, persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import devToolsEnhancer from 'remote-redux-devtools';
 import { IRegisterEntry } from '../components/registration/Register/RegisterOperations';
 import { IRegister } from '../components/registration/RegisterListOperations';
 import { User } from '../entity/User';
@@ -41,7 +42,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const configureStore = () => {
-    const store = createStore(persistedReducer);
+    const store = createStore(persistedReducer, devToolsEnhancer());
     const persistor = persistStore(store);
     return { store, persistor }
 };

@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import { REGISTER_LIST_ACTION_TYPES } from '../RegisterListOperations';
 
 export enum ACTION_TYPES {
     SIGN_IN_USER = '@GUEST_BOOK/SIGN_IN_USER',
@@ -40,6 +41,8 @@ export const registerEntriesReducer = handleActions(
                 return guestBookEntry;
             });
         },
+        [REGISTER_LIST_ACTION_TYPES.REMOVE_REGISTER]: (state: IRegisterEntry[], action: any) => state
+            .filter((entry: IRegisterEntry) => entry.parentId !== action.payload)
     },
     REGISTER_DEFAULT_STATE
 );
