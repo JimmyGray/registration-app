@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.jamesbriangray.visitorguestbook",
-      "versionCode": 2
+      "versionCode": 3
     }
   }
 }
