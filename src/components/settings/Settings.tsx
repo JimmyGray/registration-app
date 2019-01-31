@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { CheckBox, normalize } from 'react-native-elements';
+import { CheckBox, FormLabel, normalize } from 'react-native-elements';
 import { ISettings } from '../../store/createStore';
 import { Setting } from './SettingsOperations';
 
@@ -17,9 +17,15 @@ export default class Settings extends React.Component<ISettingsProps> {
 
     public render() {
         return (
-            <View style={{ flex: 1, justifyContent: 'space-between', marginBottom: normalize(10) }}>
+            <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                <FormLabel>Register Options</FormLabel>
                 <CheckBox
-                    title='Auto Sign out user (uses current time)'
+                    title='Sign In guests automatically (uses current time)'
+                    checked={this.props.settings.autoSignIn}
+                    onPress={this.handleOnToggle.bind(this, Setting.AUTO_SIGN_IN)}
+                />
+                <CheckBox
+                    title='Sign Out guests automatically (uses current time)'
                     checked={this.props.settings.autoSignOut}
                     onPress={this.handleOnToggle.bind(this, Setting.AUTO_SIGN_OUT)}
                 />

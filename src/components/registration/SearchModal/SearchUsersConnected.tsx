@@ -7,7 +7,8 @@ import SearchUsers from './SearchUsers';
 const mapStateToProps = (state: IAppState, ownProps: any) => ({
     users: state.users,
     navigation: ownProps.navigation,
-    register: state.ui.register
+    register: state.ui.register,
+    settings: state.settings
 });
 
 const mapDispatchToProps = (dispatch: any) => bindActionCreators({

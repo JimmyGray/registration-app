@@ -11,6 +11,7 @@ import { rootReducer } from './combineReducers';
 
 export interface ISettings {
     autoSignOut: boolean;
+    autoSignIn: boolean;
 }
 
 export interface IAppState {

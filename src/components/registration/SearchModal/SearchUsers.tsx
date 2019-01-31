@@ -3,11 +3,12 @@ import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { Button, FormInput, FormLabel, normalize } from 'react-native-elements';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import SwipeList from '../../common/SwipeList/SwipeList';
 import { User } from '../../../entity/User';
 import { Screens } from '../../../Screens';
+import { ISettings } from '../../../store/createStore';
 import { green, grey, keyboardAVWithHeader, red } from '../../../theme/theme';
 import { uuid } from '../../../util/uuid';
+import SwipeList from '../../common/SwipeList/SwipeList';
 import { IRegisterEntry } from '../Register/RegisterOperations';
 import { IRegister } from '../RegisterListOperations';
 
@@ -16,6 +17,7 @@ export interface IRegistrationScreenProps {
     onSignInUser: (entry: IRegisterEntry) => void;
     register: IRegister;
     navigation: any;
+    settings: ISettings;
 }
 
 export interface IRegistrationScreenState {
@@ -41,7 +43,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
                                   keyboardVerticalOffset={keyboardAVWithHeader}>
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
-                    onConfirm={this.handleDatePicked}
+                    onConfirm={(date) => this.handleDatePicked(date)}
                     onCancel={this.hideDateTimePicker}
                     mode='time'
                 />
@@ -60,7 +62,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
                             button: {
                                 title: 'Sign In',
                                 backgroundColor: green.green700,
-                                onPress: (user) => this.showDateTimePicker(user),
+                                onPress: (user) => this.handleOnSignIn(user),
                                 borderRadius: 5,
                                 containerViewStyle: { width: normalize(110), height: normalize(30), justifyContent: 'center' },
                                 buttonStyle: { padding: normalize(5) }
@@ -77,6 +79,17 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
                 </View>
             </KeyboardAvoidingView>
         );
+    }
+
+    private handleOnSignIn = (user: User) => {
+        if (this.props.settings.autoSignIn) {
+            this.setState(
+                { user },
+                () => this.handleDatePicked(moment().toDate())
+            );
+        } else {
+            this.showDateTimePicker(user)
+        }
     }
 
     private handleOnSearch = (query: string) => {
@@ -107,7 +120,7 @@ export default class SearchUsers extends React.Component<IRegistrationScreenProp
 
     private hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false, user: undefined });
 
-    private handleDatePicked = (selectedDate: Date) => {
+    private handleDatePicked(selectedDate: Date) {
         const { register } = this.props;
         const { user } = this.state;
         const { date } = register;
