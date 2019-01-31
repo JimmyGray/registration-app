@@ -14,10 +14,10 @@
     "test-watch": "jest --watch"
   },
   "dependencies": {
-    "expo": "31.0.2",
-    "moment": "^2.23.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "expo": "^32.0.0",
     "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "moment": "^2.23.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "0.19.1",
     "react-native-modal-datetime-picker": "^6.0.0",
@@ -30,7 +30,7 @@
     "redux-persist": "^5.10.0"
   },
   "devDependencies": {
-    "@types/expo": "31.0.5",
+    "@types/expo": "31.0.9",
     "@types/jest": "23.3.10",
     "@types/react": "16.7.18",
     "@types/react-native": "0.57.23",
