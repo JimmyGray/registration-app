@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "react-native-typescript",
-    "slug": "react-native-typescript",
+    "name": "Visitor Guest Book",
+    "slug": "visitorguestbook",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -22,7 +22,12 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.jamesbriangray.visitorguestbook",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.jamesbriangray.visitorguestbook",
+      "versionCode": 2
     }
   }
 }
